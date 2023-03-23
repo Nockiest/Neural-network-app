@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Neuron from "./Neuron.js";
+import Neuron from "./neurons/Neuron.js";
 
 import { useState } from 'react';
 
@@ -26,7 +26,7 @@ export default function Workspace() {
   return (
     <div style={styles.workspace} onClick={handleWorkspaceClick}>
       {neurons.map((neuron, index) => (
-        <Neuron key={index} size="60" style={{ position: 'absolute', top: neuron.y, left: neuron.x }} />
+        <Neuron key={index} size="60" x={neuron.x} y={neuron.y} style={{ position: 'absolute', top: neuron.y, left: neuron.x , border: "2px"}} />
       ))}
     </div>
   );

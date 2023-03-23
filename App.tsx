@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Neuron from "./Neuron.js";
 import './style.css';
 import Toolbar from "./Toolbar.js"
 import Workspace from "./workspace.js"
@@ -38,8 +37,8 @@ function App() {
 export default App;
 
 
- 
-//zobraz neuron tam, kam klikneš
-// nastav toolbaru výšku a šířku
-// zajisti aby měli neuron správné odsazení
-// dej jim absolutní pozici
+//nastav pozici sliderů rovnou v return statement neuronu
+// zobraz lištu nastavení nalevé straně, 
+//oprace problém s toggle tlačítkem
+// zamez zobrazování neuronu na druhém neuronu
+// vytvoř dva různé slidery, jeden na bias a druhý na váhu
