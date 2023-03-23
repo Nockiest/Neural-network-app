@@ -17,11 +17,11 @@ function App() {
   return (
     <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
       {isToolbarVisible && (
-        <div style={{ width: '200px', backgroundColor: 'lightgray', position:"absolute" }}>
+        <div style={{ width: '200px', backgroundColor: 'lightgray', position:"fixed", zIndex: 1 }}>
           <Toolbar toggleVisible={toggleToolbar} />
         </div>
       )}
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, position: 'relative', zIndex: 0 }}>
         <Workspace />
       </div>
       {!isToolbarVisible && (
@@ -33,7 +33,10 @@ function App() {
   );
 }
 
+
+
 export default App;
+
 
  
 //zobraz neuron tam, kam klikneš

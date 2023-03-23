@@ -7,20 +7,29 @@ export default function Workspace() {
   const [neurons, setNeurons] = useState([]);
 
   const handleWorkspaceClick = (event) => {
-    console.log(event)
-    const x = event.clientX;
-    const y = event.clientY;
+    const x = event.clientX - 30; // 30 is half the neuron size
+    const y = event.clientY - 30;
     setNeurons([...neurons, { x, y }]);
   };
 
+  const styles = {
+    workspace: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      height: '100%',
+      width: '100%',
+      backgroundColor: 'pink',
+    },
+  };
+
   return (
-    <div style={{ position: 'relative', backgroundColor: 'pink' }} onClick={handleWorkspaceClick}>
+    <div style={styles.workspace} onClick={handleWorkspaceClick}>
       {neurons.map((neuron, index) => (
         <Neuron key={index} size="60" style={{ position: 'absolute', top: neuron.y, left: neuron.x }} />
       ))}
-      <Neuron size="60"/>
     </div>
   );
 }
 
-
+// <Neuron size="60"/>

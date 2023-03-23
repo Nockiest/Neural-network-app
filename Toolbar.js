@@ -11,8 +11,8 @@ function Toolbar(props) {
   };
 
   return (
-    <div id="toolbar" style={{ position: 'relative' }}>
-        <div style={{ position: 'absolute', top: 0, right: 0 }}>
+    <div id="toolbar" style={{ position: 'absolute', top: 0, right: 0, height: '100vh' }}>
+      <div style={{ position: 'absolute', top: 0, right: 0 }}>
         {isToolbarVisible && (
           <button onClick={toggleToolbar}>Hide Toolbar</button>
         )}
@@ -27,7 +27,6 @@ function Toolbar(props) {
         <p>Load a network</p>
         <p>scale</p>
       </div>
-     
     </div>
   );
 }
