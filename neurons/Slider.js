@@ -14,6 +14,7 @@ function Slider({x, y, value, setValue, color, size}) {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      zIndex:3,
     },
     slider: {
       width: '80%',

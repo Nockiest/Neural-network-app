@@ -35,28 +35,38 @@ function Neuron({ size, filled, bias, weight, x, y }) {
       top: y,
       left: x,
       position: 'absolute',
+      zIndex: 1,
+    },
+    slider: {
+      position: 'absolute',
+      zIndex: 3, // add this line
+      marginLeft: `-${size/2}px`,
+      marginTop: `${size/2}px`,
     },
   };
 
   return (
     <div>
-      <Slider
-        x={x}
-        y={y-size*2+25}
-        value={biasValue}
-        setValue={setBiasValue}
-        color={biasValue === 0 ? 'black' : biasValue > 0 ? 'green' : 'violet'}
-        size = {size} 
-      />
+   
       <div style={styles.neuron} onClick={handleNeuronClick}></div>
       <Slider
         x={x}
-        y={y-15}
+        y={y - size*1.5 } // adjust y position
+        value={biasValue}
+        setValue={setBiasValue}
+        color={biasValue === 0 ? 'black' : biasValue > 0 ? 'green' : 'violet'}
+        size={size}
+        style={styles.slider} // add style
+      />
+      <Slider
+        x={x}
+        y={y - 15} // adjust y position
         value={weightValue}
         setValue={setWeightValue}
         color={weightValue === 0 ? 'black' : weightValue > 0 ? 'green' : 'violet'}
-        size = {size} 
-/>
+        size={size}
+        style={styles.slider} // add style
+      />
     </div>
   );
 }

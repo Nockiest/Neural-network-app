@@ -5,11 +5,23 @@ import { useState } from 'react';
 
 export default function Workspace() {
   const [neurons, setNeurons] = useState([]);
+  const neuronSize = 60;
 
   const handleWorkspaceClick = (event) => {
-    const x = event.clientX - 30; // 30 is half the neuron size
-    const y = event.clientY - 30;
-    setNeurons([...neurons, { x, y }]);
+    const x = event.clientX - neuronSize / 2;
+    const y = event.clientY - neuronSize / 2;
+  
+    const isOccupied = neurons.some((neuron) => {
+      const distance = Math.sqrt(
+        Math.pow(neuron.x - x, 2) + Math.pow(neuron.y - y, 2)
+      );
+      const minDistance = 2 * neuronSize;
+      return distance < minDistance;
+    });
+  
+    if (!isOccupied) {
+      setNeurons([...neurons, { x, y }]);
+    }
   };
 
   const styles = {
@@ -20,16 +32,29 @@ export default function Workspace() {
       height: '100%',
       width: '100%',
       backgroundColor: 'pink',
+    
     },
   };
 
   return (
     <div style={styles.workspace} onClick={handleWorkspaceClick}>
       {neurons.map((neuron, index) => (
-        <Neuron key={index} size="60" x={neuron.x} y={neuron.y} style={{ position: 'absolute', top: neuron.y, left: neuron.x , border: "2px"}} />
+        <Neuron
+          key={index}
+          size={neuronSize}
+          x={neuron.x}
+          y={neuron.y}
+          style={{
+            position: 'absolute',          
+            border: '2px solid black',
+            borderRadius: '50%',
+          }}
+        />
       ))}
     </div>
   );
 }
 
+// top: neuron.y,
+//left: neuron.x,
 // <Neuron size="60"/>

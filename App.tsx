@@ -30,9 +30,8 @@ function App() {
 
 export default App;
 
-
-//nastav pozici sliderů rovnou v return statement neuronu
- 
-//oprace problém s toggle tlačítkem
-// zamez zobrazování neuronu na druhém neuronu
 // vytvoř dva různé slidery, jeden na bias a druhý na váhu
+// nastylizuj slidery
+// zprovozni ničení neuronů
+// zprovozni pohyb neuronů
+//nech neurony se objevit blíž k sobě
