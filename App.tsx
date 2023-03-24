@@ -14,7 +14,7 @@ function App() {
   return (
     <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
       {
-        <div style={{ width: '200px', backgroundColor: 'lightgray', position:"fixed", zIndex: 1 }}>
+        <div style={{backgroundColor: 'lightgray', position:"fixed", zIndex: 1 }}>
           <Toolbar toggleVisible={toggleToolbar}
                    isVisible={isToolbarVisible} />
         </div>

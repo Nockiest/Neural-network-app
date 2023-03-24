@@ -46,7 +46,7 @@ export default function Workspace() {
           y={neuron.y}
           style={{
             position: 'absolute',          
-            border: '2px solid black',
+            border: '0.05rem solid black',
             borderRadius: '50%',
           }}
         />

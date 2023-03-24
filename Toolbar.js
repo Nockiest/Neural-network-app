@@ -36,11 +36,11 @@ function Toolbar(props) {
       </div>
       {isVisible && (
         <div>
-          <p style={{ marginBottom: '20px' }}>Save</p>
-          <p style={{ marginBottom: '20px' }}>Delete</p>
-          <p style={{ marginBottom: '20px' }}>New</p>
-          <p style={{ marginBottom: '20px' }}>Load a network</p>
-          <p style={{ marginBottom: '20px' }}>scale</p>
+          <p style={{ marginBottom: '1.5rem' }}>Save</p>
+          <p style={{ marginBottom: '1.5rem' }}>Delete</p>
+          <p style={{ marginBottom: '1.5rem' }}>New</p>
+          <p style={{ marginBottom: '1.5rem' }}>Load a network</p>
+          <p style={{ marginBottom: '1.5rem' }}>scale</p>
         </div>
       )}
     </div>
