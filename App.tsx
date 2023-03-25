@@ -30,4 +30,8 @@ function App() {
 
 export default App;
 
-// zprovozni pohyb neuronů
+// promaž staré neurony
+// přidej k neuronu křížek, který ho smaaže
+// přidej node pro propojení neuriónů
+// vytvoř čáru mezi kliknutými spoji
+// stylizuj ji podle hodnoty
