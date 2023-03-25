@@ -4,7 +4,7 @@ import { useState } from 'react';
 import * as React from 'react';
 import { useState } from 'react';
 
-function Slider({x, y, value, setValue, color, size}) {
+function Slider({ name, x, y, value, setValue, color, size, sendValue }) {
   const styles = {
     sliderContainer: {
       position: 'absolute',
@@ -28,11 +28,12 @@ function Slider({x, y, value, setValue, color, size}) {
 
   const handleValueChange = (event) => {
     setValue(event.target.value);
+    sendValue(name, event.target.value);
   };
 
   return (
     <div style={styles.sliderContainer}>
-      <div style={styles.label}>Value: {value}</div>
+      <div style={styles.label}>{name}: {value}</div>
       <input
         type="range"
         min="-1"
@@ -45,6 +46,7 @@ function Slider({x, y, value, setValue, color, size}) {
     </div>
   );
 }
+
 
 
  

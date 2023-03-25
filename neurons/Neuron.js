@@ -8,12 +8,14 @@ function Neuron({ size, filled, bias, weight, x, y }) {
   const [weightValue, setWeightValue] = useState(weight);
   const [isBlack, setIsBlack] = useState(false);
 
-  const handleBiasChange = (event) => {
-    setBiasValue(event.target.value);
-  };
-
-  const handleWeightChange = (event) => {
-    setWeightValue(event.target.value);
+  const handleSliderValueChange = (name, value) => {
+    if (name === 'Bias') {
+      setBiasValue(value);
+      // do something with the bias value
+    } else if (name === 'Weight') {
+      setWeightValue(value);
+      // do something with the weight value
+    }
   };
 
   const handleNeuronClick = () => {
@@ -50,23 +52,25 @@ function Neuron({ size, filled, bias, weight, x, y }) {
    
       <div style={styles.neuron} onClick={handleNeuronClick}></div>
       <Slider
-        x={x}
-        y={y - size*1.5 } // adjust y position
-        value={biasValue}
-        setValue={setBiasValue}
-        color={biasValue === 0 ? 'black' : biasValue > 0 ? 'green' : 'violet'}
-        size={size}
-        style={styles.slider} // add style
-      />
-      <Slider
-        x={x}
-        y={y - 15} // adjust y position
-        value={weightValue}
-        setValue={setWeightValue}
-        color={weightValue === 0 ? 'black' : weightValue > 0 ? 'green' : 'violet'}
-        size={size}
-        style={styles.slider} // add style
-      />
+  name="Weight"
+  x={x}
+  y={y - 15}
+  value={weightValue}
+  setValue={setWeightValue}
+  color={weightValue === 0 ? 'black' : weightValue > 0 ? 'green' : 'violet'}
+  size={size}
+  sendValue={(name, value) => handleSliderValueChange(name, value)}
+/>
+<Slider
+  name="Bias"
+  x={x}
+  y={y - 15}
+  value={weightValue}
+  setValue={setWeightValue}
+  color={weightValue === 0 ? 'black' : weightValue > 0 ? 'green' : 'violet'}
+  size={size}
+  sendValue={(name, value) => handleSliderValueChange(name, value)}
+/>
     </div>
   );
 }
