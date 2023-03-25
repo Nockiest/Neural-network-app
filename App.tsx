@@ -30,8 +30,4 @@ function App() {
 
 export default App;
 
-// vytvoř dva různé slidery, jeden na bias a druhý na váhu
-// nastylizuj slidery
-// zprovozni ničení neuronů
 // zprovozni pohyb neuronů
-//nech neurony se objevit blíž k sobě
