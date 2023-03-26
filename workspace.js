@@ -4,10 +4,18 @@ import { useState } from 'react';
 
 export default function Workspace() {
   const [neurons, setNeurons] = useState([]);
+  const [dragedFromPosition, setDragedFromPosition] = useState(null);
+
   const neuronSize = 60;
   
 
   const handleClick = (event) => {
+    console.log(dragedFromPosition)
+    if (dragedFromPosition) {
+      console.log(dragedFromPosition);
+      return;
+    }
+
     if (event.button !== 0) return; // Only handle left mouse click
 
     const x = event.clientX - neuronSize / 2;
@@ -29,8 +37,10 @@ export default function Workspace() {
   };
 
   const handleNeuronClick = (event, neuron) => {
+    
+    console.log("HI")
     if (event.button !== 0) return; // Only handle left mouse button
-
+  
     const updatedNeurons = neurons.map((n) => {
       if (n === neuron) {
         return { ...n, isBlack: !n.isBlack };
@@ -38,11 +48,41 @@ export default function Workspace() {
         return n;
       }
     });
-
+  
     setNeurons(updatedNeurons);
-
-   // setDraggedNeuron(neuron);
   };
+
+   const deleteNeuron = (event,neuron) => {  
+     const newNeurons = neurons.filter((n) => { 
+        if (n !== neuron) {
+          return true;
+        } else {
+          return false;
+        }
+    });  
+    setNeurons(newNeurons);
+  };
+
+  const preventContextMenu = function(event){
+    event.preventDefault()
+  }
+
+  const dragNeuron = (event, neuron) => {
+    if (dragedFromPosition) {
+      return;
+    } else {
+      setDragedFromPosition({ x: event.clientX, y: event.clientY, neuron });
+    }
+  
+    console.log(dragedFromPosition);
+  };
+
+  const releaseNeuron = (event, neuron) => {
+    if (dragedFromPosition) {
+      setDragedFromPosition(null);
+    }
+  }
+  
 
   const styles = {
     workspace: {
@@ -54,12 +94,11 @@ export default function Workspace() {
       height: 'window.innerWidth',
       width: 'window.inneHeight',
       backgroundColor: 'pink',
-      padding: 0,
     },
   };
 
   return (
-    <div style={styles.workspace} onClick={handleClick}>
+    <div style={styles.workspace} onClick={handleClick} onContextMenu={preventContextMenu} >
       {neurons.map((neuron, index) => (
         <Neuron
           key={index}
@@ -77,6 +116,9 @@ export default function Workspace() {
           setNeurons={setNeurons}
           neurons={neurons}
           onClick={() => handleNeuronClick(event, neuron)}  
+          onRightClick={() => deleteNeuron(event,neuron)}
+          onMouseDown = {() => dragNeuron(event, neuron)}
+          onMouseUp={releaseNeuron}
         />
       ))}
     </div>
@@ -110,19 +152,10 @@ export default function Workspace() {
   };*/
 
   
-  /*const handleContextMenu = (event) => {
-    event.preventDefault(); // Prevent default context menu behavior
-  
-    const offsetX = event.nativeEvent.offsetX;
-    const offsetY = event.nativeEvent.offsetY;
-  
-    const newNeurons = neurons.filter((neuron) => {
-      const distance = Math.sqrt(
+  // const [draggedNeuron, setDraggedNeuron] = useState(null);
+
+     /* const distance = Math.sqrt(
         Math.pow(neuron.x + neuronSize / 2 - offsetX, 2) + Math.pow(neuron.y + neuronSize / 2 - offsetY, 2)
       );
       const maxDistance = neuronSize / 2;
-      return distance > maxDistance;
-    });
-  
-    setNeurons(newNeurons);
-  };*/// const [draggedNeuron, setDraggedNeuron] = useState(null);
+      return distance > maxDistance;*/

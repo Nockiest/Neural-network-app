@@ -31,8 +31,8 @@ function App() {
 
 export default App;
 
-// promaž staré neurony
-// přidej k neuronu křížek, který ho smaaže
+//oprav, že se po dragnutí zobrazí nový neuron
+// změň koordináty posunutého neuronu
 // přidej node pro propojení neuriónů
 // vytvoř čáru mezi kliknutými spoji
 // stylizuj ji podle hodnoty

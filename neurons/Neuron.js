@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useState } from "react";
 import Slider from "./Slider.js"
 
-function Neuron({ size, isBlack, bias, weight, x, y, setNeurons, neurons, onClick }) {
+function Neuron({ size, isBlack, bias, weight, x, y, onClick,onRightClick, onMouseDown, onMouseUp }) {
   const [biasValue, setBiasValue] = useState(bias);
   const [weightValue, setWeightValue] = useState(weight);
   const [isDragging, setIsDragging] = useState(false);
@@ -46,7 +46,13 @@ function Neuron({ size, isBlack, bias, weight, x, y, setNeurons, neurons, onClic
 
   return (
     <div style={{ position: 'relative' }}>
-      <div style={styles.neuron} onClick={onClick}></div>
+      <div
+       style={styles.neuron}
+       onClick={onClick} 
+       onContextMenu={onRightClick} 
+       onMouseDown={onMouseDown} 
+       onMouseUp={onMouseUp}>
+       </div>
       <Slider
         name="Weight"
         x={x}
