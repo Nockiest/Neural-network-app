@@ -3,13 +3,12 @@ import * as React from 'react';
 import { useState } from "react";
 import Slider from "./Slider.js"
 
-function Neuron({ size, filled, bias, weight, x, y, setNeurons, neurons, mouseDown }) {
+function Neuron({ size, isBlack, bias, weight, x, y, setNeurons, neurons, onClick }) {
   const [biasValue, setBiasValue] = useState(bias);
   const [weightValue, setWeightValue] = useState(weight);
-  const [isBlack, setIsBlack] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [initialMousePos, setInitialMousePos] = useState({ x: 0, y: 0 });
-  console.log({ size, filled, bias, weight, x, y, setNeurons, neurons, mouseDown })
+ // console.log({ size, isBlack, bias, weight, x, y, setNeurons, neurons, mouseDown })
 
   const handleSliderValueChange = (name, value) => {
     if (name === "Bias") {
@@ -21,42 +20,14 @@ function Neuron({ size, filled, bias, weight, x, y, setNeurons, neurons, mouseDo
     }
   };
 
-  const handleNeuronClick = (event) => {
-    if (event.button === 0) { // left mouse button
-      setIsBlack(!isBlack);
-    } else if (event.button === 2) { // right mouse button
-      setIsBlack(false);
-    }
-  };
-  const handleMouseDown = mouseDown/*(event) => {
-    if (event.button === 0) {
-      setIsDragging(true);
-      setInitialMousePos({ x: event.clientX, y: event.clientY });
-      mouseDown(event); // call the onMouseDown function passed as a prop
-    }
-  };*/
   
-
-  const handleMouseMove = (event) => {
-    if (isDragging) {
-      const newX = x + event.clientX - initialMousePos.x;
-      const newY = y + event.clientY - initialMousePos.y;
-      setInitialMousePos({ x: event.clientX, y: event.clientY });
-      setNeurons(
-        neurons.map((neuron) =>
-          neuron.x === x && neuron.y === y ? { ...neuron, x: newX, y: newY } : neuron
-        )
-      );
-    }
-  };
-
   const styles = {
     neuron: {
       width: `${size}px`,
       height: `${size}px`,
       border: '1px solid black',
-      backgroundColor: isBlack ? 'gray' : filled ? 'gray' : 'white',
-      color: filled || isBlack ? 'white' : 'black',
+      backgroundColor: isBlack ? 'gray' : 'white',
+      color: isBlack ? 'white' : 'black',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
@@ -75,7 +46,7 @@ function Neuron({ size, filled, bias, weight, x, y, setNeurons, neurons, mouseDo
 
   return (
     <div style={{ position: 'relative' }}>
-      <div style={styles.neuron} onMouseDown={handleMouseDown} onClick={handleNeuronClick}></div>
+      <div style={styles.neuron} onClick={onClick}></div>
       <Slider
         name="Weight"
         x={x}
@@ -95,18 +66,52 @@ function Neuron({ size, filled, bias, weight, x, y, setNeurons, neurons, mouseDo
         sendValue={(name, value) => handleSliderValueChange(name, value)}
       />
     </div>
-  );
+  )
 }
-
-
 export default Neuron;
 
 
 
+/*const handleNeuronClick = (event) => {
+    if (event.button === 0) { // left mouse button
+      setIsBlack(!isBlack);
+    } else if (event.button === 2) { // right mouse button
+      setIsBlack(!isBlack);
+    }
+  };*/
 
 
+/*(event) => {
+    if (event.button === 0) {
+      setIsDragging(true);
+      setInitialMousePos({ x: event.clientX, y: event.clientY });
+      mouseDown(event); // call the onMouseDown function passed as a prop
+    }
+  };*/
+  
 
+  /*const handleMouseMove = (event) => {
+    if (isDragging) {
+      const newX = x + event.clientX - initialMousePos.x;
+      const newY = y + event.clientY - initialMousePos.y;
+      setInitialMousePos({ x: event.clientX, y: event.clientY });
+      setNeurons(
+        neurons.map((neuron) =>
+          neuron.x === x && neuron.y === y ? { ...neuron, x: newX, y: newY } : neuron
+        )
+      );
+    }
+  };*/
 
-
-
+ /*const handleClick = () => {
+    setNeurons(
+      neurons.map((neuron) => {
+        if (neuron === { x, y }) {
+          return { ...neuron, isBlack: !neuron.isBlack };
+        } else {
+          return neuron;
+        }
+      })
+    );
+  };*/
 
