@@ -6,7 +6,7 @@ function Slider({ name, x, y, value, setValue, size }) {
 
   React.useEffect(() => {
     if (value === 0) {
-      setColor('white');
+      setColor('black');
     } else if (value > 0) {
       setColor('lightgreen');
     } else {
