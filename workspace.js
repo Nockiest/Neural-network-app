@@ -6,7 +6,7 @@ export default function Workspace() {
   const [neurons, setNeurons] = useState([]);
   const [dragedFromPosition, setDragedFromPosition] = useState(null);
 
-  const neuronSize = 60;
+  const neuronSize =60;
   
 
   const handleClick = (event) => {
@@ -67,21 +67,7 @@ export default function Workspace() {
     event.preventDefault()
   }
 
-  const dragNeuron = (event, neuron) => {
-    if (dragedFromPosition) {
-      return;
-    } else {
-      setDragedFromPosition({ x: event.clientX, y: event.clientY, neuron });
-    }
-  
-    console.log(dragedFromPosition);
-  };
-
-  const releaseNeuron = (event, neuron) => {
-    if (dragedFromPosition) {
-      setDragedFromPosition(null);
-    }
-  }
+   
   
 
   const styles = {
@@ -117,13 +103,32 @@ export default function Workspace() {
           neurons={neurons}
           onClick={() => handleNeuronClick(event, neuron)}  
           onRightClick={() => deleteNeuron(event,neuron)}
-          onMouseDown = {() => dragNeuron(event, neuron)}
-          onMouseUp={releaseNeuron}
+          
         />
       ))}
     </div>
   );
 }
+
+
+/*const dragNeuron = (event, neuron) => {
+  if (dragedFromPosition) {
+    return;
+  } else {
+    setDragedFromPosition({ x: event.clientX, y: event.clientY, neuron });
+  }
+
+  console.log(dragedFromPosition);
+};
+
+const releaseNeuron = (event, neuron) => {
+  if (dragedFromPosition) {
+    setDragedFromPosition(null);
+  }
+}*/
+// onMouseDown = {() => dragNeuron(event, neuron)}
+//onMouseUp={releaseNeuron}
+
 //mouseDown={handleMouseDown}
 //onMouseDown={(event) => handleMouseDown(event, neuron)}
 // mouseDown={handleMouseDown} 

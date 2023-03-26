@@ -17,29 +17,39 @@ function Slider({ name, x, y, value, setValue, size }) {
   const styles = {
     sliderContainer: {
       position: 'absolute',
-      top: `${y + size*1.1}px`,
-      left: `${x + size * 0.1}px`,
+      top: `${y}px`,
+      left: `${x}px`,
       width: `${size}px`,
       display: 'flex',
-      flexDirection: 'column',
+      flexDirection: 'row',
       alignItems: 'center',
       zIndex: 3,
       borderRadius: '10px',
-      padding: '5px',
-      fontSize: '15px',
+      padding: "0px 0px",
+      fontSize: '13px',
       fontWeight: 900,
       overflow: 'hidden',
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
       textAlign: 'center',
+    //  border: "solid 2px black"
     },
     slider: {
       width: '80%',
-      margin: '-5px',
+      margin: '0px',
+      marginLeft: "10%",
       backgroundColor: color,
     },
     label: {
+      position: "absolute",
       color: color, 
+      opacity:1,
+      zIndex:10,
+      pointerEvents: "none",
+      left: "50%",
+      top: "50%",
+      transform: "translate(-50%, -50%)",
+      //margin: "-5px"
        },
   };
 
@@ -49,7 +59,7 @@ function Slider({ name, x, y, value, setValue, size }) {
 
   return (
     <div style={styles.sliderContainer}>
-      {name === 'Bias' && <div style={styles.label}>{name}</div>}
+      {/*name === 'Bias' &&*/ <div style={styles.label}>{name}</div>}
       <input
         type="range"
         min="-1"
@@ -59,12 +69,12 @@ function Slider({ name, x, y, value, setValue, size }) {
         style={styles.slider}
         onChange={handleValueChange}
       />
-      {name === 'Weight' && <div style={styles.label}>{name}</div>}
+      
     </div>
   );
 }
 
-
+// {name === 'Weight' && <div style={styles.label}>{name}</div>}
 
 
  

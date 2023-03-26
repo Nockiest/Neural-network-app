@@ -31,8 +31,12 @@ function App() {
 
 export default App;
 
-//oprav, že se po dragnutí zobrazí nový neuron
-// změň koordináty posunutého neuronu
+ 
+// zastav změnu neuronu při kliknutí na node
+// naformátuj vše, aby to vypadalo dobře při všech velikostech
+// vyrendruj čáru, která bude následovat kurzor, když klikneš na Node
 // přidej node pro propojení neuriónů
 // vytvoř čáru mezi kliknutými spoji
 // stylizuj ji podle hodnoty
+//oprav, že se po dragnutí zobrazí nový neuron
+// změň koordináty posunutého neuronu

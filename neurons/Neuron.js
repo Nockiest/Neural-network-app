@@ -1,7 +1,7 @@
-
+import { useState } from 'react';
 import * as React from 'react';
-import { useState } from "react";
-import Slider from "./Slider.js"
+import Slider from './Slider';
+import Node from "./ConnectionNode.js"
 
 function Neuron({ size, isBlack, bias, weight, x, y, onClick,onRightClick, onMouseDown, onMouseUp }) {
   const [biasValue, setBiasValue] = useState(bias);
@@ -31,7 +31,6 @@ function Neuron({ size, isBlack, bias, weight, x, y, onClick,onRightClick, onMou
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
-      padding: '10px',
       cursor: 'pointer',
       top: y,
       left: x,
@@ -41,6 +40,7 @@ function Neuron({ size, isBlack, bias, weight, x, y, onClick,onRightClick, onMou
     slider: {
       position: 'absolute',
       zIndex: 3,
+  
     },
   };
 
@@ -52,11 +52,13 @@ function Neuron({ size, isBlack, bias, weight, x, y, onClick,onRightClick, onMou
        onContextMenu={onRightClick} 
        onMouseDown={onMouseDown} 
        onMouseUp={onMouseUp}>
+          <Node size={size*0.2} x={size/2-size*0.12} y={-size*0.25}/>
+          <Node size={size*0.2} x={size/2-size*0.12} y={size}/>
        </div>
       <Slider
         name="Weight"
         x={x}
-        y={y - size*1.1}
+        y={y}
         value={biasValue}
         setValue={setBiasValue}
         size={size}
@@ -65,16 +67,20 @@ function Neuron({ size, isBlack, bias, weight, x, y, onClick,onRightClick, onMou
       <Slider
         name="Bias"
         x={x}
-        y={y-size*0.2}
+        y={y+size*0.7}
         value={weightValue}
         setValue={setWeightValue}
         size={size}
         sendValue={(name, value) => handleSliderValueChange(name, value)}
       />
+      
     </div>
   )
 }
-export default Neuron;
+
+
+export default Neuron
+
 
 
 
