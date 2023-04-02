@@ -5,14 +5,12 @@ import { useState } from 'react';
 export default function Workspace() {
   const [neurons, setNeurons] = useState([]);
   const [dragedFromPosition, setDragedFromPosition] = useState(null);
+  const [connectionLineStart, setConnectionLineStart] = useState(null)
 
   const neuronSize =60;
-  
 
-  const handleClick = (event) => {
-    console.log(dragedFromPosition)
+  const handleClick = (event) => {    
     if (dragedFromPosition) {
-      console.log(dragedFromPosition);
       return;
     }
 
@@ -36,9 +34,7 @@ export default function Workspace() {
     }
   };
 
-  const handleNeuronClick = (event, neuron) => {
-    
-    console.log("HI")
+  const reverseColor = (event, neuron) => {
     if (event.button !== 0) return; // Only handle left mouse button
   
     const updatedNeurons = neurons.map((n) => {
@@ -67,8 +63,12 @@ export default function Workspace() {
     event.preventDefault()
   }
 
-   
-  
+  const createLine = (node) => {
+    if(node ===  connectionLineStart){ 
+      return } else {
+      connectionLineStart = node
+    }
+  } 
 
   const styles = {
     workspace: {
@@ -101,8 +101,9 @@ export default function Workspace() {
           }}
           setNeurons={setNeurons}
           neurons={neurons}
-          onClick={() => handleNeuronClick(event, neuron)}  
+          reverseColor={() => reverseColor(event, neuron)}  
           onRightClick={() => deleteNeuron(event,neuron)}
+          createLine={() => createLine(node)}
           
         />
       ))}

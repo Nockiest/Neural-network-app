@@ -3,12 +3,15 @@ import * as React from 'react';
 import Slider from './Slider';
 import Node from "./ConnectionNode.js"
 
-function Neuron({ size, isBlack, bias, weight, x, y, onClick,onRightClick, onMouseDown, onMouseUp }) {
+function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick, onMouseDown, onMouseUp, createLine }) {
   const [biasValue, setBiasValue] = useState(bias);
   const [weightValue, setWeightValue] = useState(weight);
   const [isDragging, setIsDragging] = useState(false);
   const [initialMousePos, setInitialMousePos] = useState({ x: 0, y: 0 });
- // console.log({ size, isBlack, bias, weight, x, y, setNeurons, neurons, mouseDown })
+  const [nodes, setNodes] = useState([
+    { x: size/2-size*0.12, y: -size*0.25, isGreen: false },
+    { x: size/2-size*0.12, y: size, isGreen: false },
+  ]);
 
   const handleSliderValueChange = (name, value) => {
     if (name === "Bias") {
@@ -20,7 +23,13 @@ function Neuron({ size, isBlack, bias, weight, x, y, onClick,onRightClick, onMou
     }
   };
 
-  
+  const reverseNodeColor = (index) => {
+    const newNodes = [...nodes];
+    newNodes[index].isGreen = !newNodes[index].isGreen;
+    setNodes(newNodes);
+    console.log(newNodes)
+  };
+
   const styles = {
     neuron: {
       width: `${size}px`,
@@ -48,12 +57,21 @@ function Neuron({ size, isBlack, bias, weight, x, y, onClick,onRightClick, onMou
     <div style={{ position: 'relative' }}>
       <div
        style={styles.neuron}
-       onClick={onClick} 
+       onClick={reverseColor} 
        onContextMenu={onRightClick} 
        onMouseDown={onMouseDown} 
        onMouseUp={onMouseUp}>
-          <Node size={size*0.2} x={size/2-size*0.12} y={-size*0.25}/>
-          <Node size={size*0.2} x={size/2-size*0.12} y={size}/>
+        {nodes.map((node, index) => (
+          <Node
+            key={index}
+            size={size*0.2}
+            x={node.x}
+            y={node.y}
+            isGreen={node.isGreen}
+            onClick={() => reverseNodeColor(index)}
+             
+          />
+        ))}
        </div>
       <Slider
         name="Weight"
@@ -63,6 +81,7 @@ function Neuron({ size, isBlack, bias, weight, x, y, onClick,onRightClick, onMou
         setValue={setBiasValue}
         size={size}
         sendValue={(name, value) => handleSliderValueChange(name, value)}
+        
       />
       <Slider
         name="Bias"
@@ -73,7 +92,6 @@ function Neuron({ size, isBlack, bias, weight, x, y, onClick,onRightClick, onMou
         size={size}
         sendValue={(name, value) => handleSliderValueChange(name, value)}
       />
-      
     </div>
   )
 }

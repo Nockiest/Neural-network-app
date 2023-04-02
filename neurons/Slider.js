@@ -8,9 +8,9 @@ function Slider({ name, x, y, value, setValue, size }) {
     if (value === 0) {
       setColor('black');
     } else if (value > 0) {
-      setColor('lightgreen');
+      setColor(`hsl(105, 100%, 27%, 1`)//green
     } else {
-      setColor(`hsl(280, 50%, 75%)`);
+      setColor(`hsl(280, 50%, 50%)`);
     }
   }, [value]);
 
@@ -32,6 +32,7 @@ function Slider({ name, x, y, value, setValue, size }) {
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
       textAlign: 'center',
+     
     //  border: "solid 2px black"
     },
     slider: {
@@ -39,6 +40,7 @@ function Slider({ name, x, y, value, setValue, size }) {
       margin: '0px',
       marginLeft: "10%",
       backgroundColor: color,
+      opacity:0.5,
     },
     label: {
       position: "absolute",
@@ -49,6 +51,8 @@ function Slider({ name, x, y, value, setValue, size }) {
       left: "50%",
       top: "50%",
       transform: "translate(-50%, -50%)",
+      textStroke: "1px #111111",
+      textFillColor: color,
       //margin: "-5px"
        },
   };

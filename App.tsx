@@ -32,8 +32,6 @@ function App() {
 export default App;
 
  
-// zastav změnu neuronu při kliknutí na node
-// naformátuj vše, aby to vypadalo dobře při všech velikostech
 // vyrendruj čáru, která bude následovat kurzor, když klikneš na Node
 // přidej node pro propojení neuriónů
 // vytvoř čáru mezi kliknutými spoji

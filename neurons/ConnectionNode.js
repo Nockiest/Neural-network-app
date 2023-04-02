@@ -3,11 +3,10 @@ import * as React from 'react';
 import Slider from './Slider';
 
 
-export default function Node({ size, x, y }) {
-  const [isGreen, setIsGreen] = useState(false);
-
-  const handleClick = () => {
-    setIsGreen(!isGreen);
+export default function Node({ size, x, y, isGreen, onClick }) {
+  const handleClick = (e) => {
+    e.stopPropagation(); 
+    onClick(); 
   };
 
   const styles = {
@@ -24,5 +23,6 @@ export default function Node({ size, x, y }) {
       cursor: "pointer",
     },
   };
-  return <div style={styles.node} onClick={handleClick}></div>;
+  
+  return  <div style={styles.node} onClick={handleClick} />
 }
