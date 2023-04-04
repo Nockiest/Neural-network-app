@@ -30,10 +30,7 @@ function App() {
 
 
 export default App;
-
  
-// vyrendruj čáru, která bude následovat kurzor, když klikneš na Node
-// přidej node pro propojení neuriónů
 // vytvoř čáru mezi kliknutými spoji
 // stylizuj ji podle hodnoty
 //oprav, že se po dragnutí zobrazí nový neuron

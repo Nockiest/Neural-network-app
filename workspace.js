@@ -5,9 +5,16 @@ import { useState } from 'react';
 export default function Workspace() {
   const [neurons, setNeurons] = useState([]);
   const [dragedFromPosition, setDragedFromPosition] = useState(null);
-  const [connectionLineStart, setConnectionLineStart] = useState(null)
-
+  const [connectionLineStart, setConnectionLineStart] = useState({x: null,y:null})
+  const [mouseX, setMouseX] = useState(null);
+  const [mouseY, setMouseY] = useState(null);
   const neuronSize =60;
+
+  React.useEffect(() => {
+    setImmediate(() => {
+      // force a synchronous update to ensure the latest mouse position is used
+    });
+  }, [mouseX, mouseY]);
 
   const handleClick = (event) => {    
     if (dragedFromPosition) {
@@ -33,6 +40,11 @@ export default function Workspace() {
       // Do something else
     }
   };
+
+  function handleMouseMove(event) {
+    setMouseX(event.clientX);
+    setMouseY(event.clientY);
+ }
 
   const reverseColor = (event, neuron) => {
     if (event.button !== 0) return; // Only handle left mouse button
@@ -63,16 +75,42 @@ export default function Workspace() {
     event.preventDefault()
   }
 
-  const createLine = (node) => {
-    if(node ===  connectionLineStart){ 
-      return } else {
-      connectionLineStart = node
-    }
+  const createLineStart = (node) => {
+    if(connectionLineStart.x !== null){ //nedefinuješ .y tak pozor
+       setConnectionLineStart({x:null,y:null}) 
+    } else {
+      setConnectionLineStart({x:node.x+node.size/2,y:node.y+node.size/2 })
+       }
   } 
 
+  function Line({ startCoords, endCoords = { x: mouseX, y: mouseY }, color}) {
+    const dx = endCoords.x - startCoords.x;
+    const dy = endCoords.y - startCoords.y;
+    const angle = Math.atan2(dy, dx);
+    const length = Math.sqrt(dx * dx + dy * dy);
+    console.log( startCoords, endCoords, color)
+   if(startCoords.x===null||mouseX.x===null){return}
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          top: startCoords.y ,
+          left: startCoords.x,
+          width: length,
+          height: '2px',
+          backgroundColor: color,
+          transform: `rotate(${angle}rad)`,
+          transformOrigin: '0 0',
+          pointerEvents: 'none',
+          zIndex: 1,
+        }}
+      />
+    );
+  }
+  
   const styles = {
     workspace: {
-      position: 'absolute',
+      //position: 'absolute',
       top: -20,
       left: 0,
       bottom: 0,
@@ -80,11 +118,15 @@ export default function Workspace() {
       height: 'window.innerWidth',
       width: 'window.inneHeight',
       backgroundColor: 'pink',
+      position: 'relative',
+      height:"100vh",
+      width:"100vw"
     },
   };
 
   return (
-    <div style={styles.workspace} onClick={handleClick} onContextMenu={preventContextMenu} >
+    <div style={styles.workspace} onClick={handleClick} onContextMenu={preventContextMenu} onMouseMove={handleMouseMove} >
+       <Line startCoords={connectionLineStart} endCoords={{ x: mouseX, y: mouseY }} color={"lightGreen"}  />
       {neurons.map((neuron, index) => (
         <Neuron
           key={index}
@@ -103,7 +145,7 @@ export default function Workspace() {
           neurons={neurons}
           reverseColor={() => reverseColor(event, neuron)}  
           onRightClick={() => deleteNeuron(event,neuron)}
-          createLine={() => createLine(node)}
+          createLineStart={(node) => createLineStart(node)}
           
         />
       ))}

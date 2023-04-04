@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import * as React from 'react';
-import Slider from './Slider';
 
-
-export default function Node({ size, x, y, isGreen, onClick }) {
+export default function Node({ size, x, y,parrentCoors, isGreen, onClick, createLineStart }) {
   const handleClick = (e) => {
     e.stopPropagation(); 
     onClick(); 
+    createLineStart({x:parrentCoors.x+x,y:parrentCoors.y+y,size:size})
   };
 
   const styles = {

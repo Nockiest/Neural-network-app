@@ -3,7 +3,7 @@ import * as React from 'react';
 import Slider from './Slider';
 import Node from "./ConnectionNode.js"
 
-function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick, onMouseDown, onMouseUp, createLine }) {
+function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick, onMouseDown, onMouseUp, createLineStart }) {
   const [biasValue, setBiasValue] = useState(bias);
   const [weightValue, setWeightValue] = useState(weight);
   const [isDragging, setIsDragging] = useState(false);
@@ -67,9 +67,10 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
             size={size*0.2}
             x={node.x}
             y={node.y}
+            parrentCoors={{x:x,y:y}}
             isGreen={node.isGreen}
             onClick={() => reverseNodeColor(index)}
-             
+            createLineStart={createLineStart}
           />
         ))}
        </div>
