@@ -30,7 +30,7 @@ function App() {
 
 
 export default App;
- 
+ //přesuň line do ocmponentů
 //zabraň propojení příjmu a výstupu stejného neuronu a příjmu a příjmu a výstup a výstupu jiných neuronů
 // stylizuj ji podle hodnoty
 //oprav, že se po dragnutí zobrazí nový neuron
