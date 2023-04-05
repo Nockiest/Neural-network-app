@@ -31,7 +31,7 @@ function App() {
 
 export default App;
  
-// vytvoř čáru mezi kliknutými spoji
+//zabraň propojení příjmu a výstupu stejného neuronu a příjmu a příjmu a výstup a výstupu jiných neuronů
 // stylizuj ji podle hodnoty
 //oprav, že se po dragnutí zobrazí nový neuron
 // změň koordináty posunutého neuronu
