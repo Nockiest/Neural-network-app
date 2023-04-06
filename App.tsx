@@ -31,7 +31,8 @@ function App() {
 
 export default App;
  
-// dovol node přístup k informacím jeho rodiče
+// zajisti, aby se vždy měnila barva pouze jednoho neuronu
+// měň tuto barvu na základě pravidle tvé simulace
 // stylizuj ji podle hodnoty
 //oprav, že se po dragnutí zobrazí nový neuron
 // změň koordináty posunutého neuronu

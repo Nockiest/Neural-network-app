@@ -58,11 +58,13 @@ export default function Workspace() {
     setNeurons(updatedNeurons);
   };
   const reverseNodeColor = (neuron) => {
+    console.log(neuron,"xyz")
     const updatedNeurons = neurons.map((n) => {
       if (n.index === neuron.index) {
         const updatedNodes = {...n.nodes};
         updatedNodes.input.isGreen = !updatedNodes.input.isGreen;
         updatedNodes.output.isGreen = !updatedNodes.output.isGreen;
+        console.log(neuron,"xyz")
         return { ...n, nodes: updatedNodes };
       } else {
         return n;
@@ -87,7 +89,6 @@ export default function Workspace() {
   }
 
   const renderNewLine = (node) => {
-    console.log(node)
   if(node.type === "input"&&connectionLineStart.x === null){return}
     if (connectionLineStart.x !== null) {
       // Create new line object
@@ -101,10 +102,8 @@ export default function Workspace() {
       if(node.type === "input"){
         setRenderedLines([...renderedLines, newLine]);
       }
-       
       // Reset connectionLineStart
       setConnectionLineStart({ x: null, y: null });
-      console.log(renderedLines)
     } else {
       setConnectionLineStart({ x: node.x + node.size / 2, y: node.y + node.size / 2 });
     }
@@ -138,8 +137,7 @@ export default function Workspace() {
             border: '0.05rem solid black',
             backgroundColor: neuron.isBlack ? 'black' : 'white',
           }}
-          setNeurons={setNeurons}
-          neurons={neurons}
+          nodeInformation={neuron.nodes}
           reverseColor={() => reverseNeuronColor(event, neuron)}  
           reverseNodeColor={() => reverseNodeColor(neuron)}
           onRightClick={() => deleteNeuron(event,neuron)}
