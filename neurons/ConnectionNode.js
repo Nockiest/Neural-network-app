@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import * as React from 'react';
 
-export default function Node({ size, x, y,parrentCoors, isGreen, onClick, createLineStart }) {
+export default function Node({ size, x, y,parrentCoors, isGreen, onClick, renderNewLine,stregth, type }) {
   const handleClick = (e) => {
     e.stopPropagation(); 
     onClick(); 
-    createLineStart({x:parrentCoors.x+x,y:parrentCoors.y+y,size:size})
+    renderNewLine({x:parrentCoors.x+x,y:parrentCoors.y+y,size:size, type:type})
   };
 
   const styles = {

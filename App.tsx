@@ -20,7 +20,7 @@ function App() {
                     />
         </div>
       }
-      <div style={{ flex: 1, position: 'relative', zIndex: 0 }}>
+      <div style={{ flex: 1, position: 'relative' }}>
         <Workspace />
       </div>
     </div>
@@ -30,8 +30,8 @@ function App() {
 
 
 export default App;
- //přesuň line do ocmponentů
-//zabraň propojení příjmu a výstupu stejného neuronu a příjmu a příjmu a výstup a výstupu jiných neuronů
+ 
+// dovol node přístup k informacím jeho rodiče
 // stylizuj ji podle hodnoty
 //oprav, že se po dragnutí zobrazí nový neuron
 // změň koordináty posunutého neuronu

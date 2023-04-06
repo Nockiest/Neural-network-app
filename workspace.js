@@ -1,23 +1,17 @@
 import * as React from 'react';
 import Neuron from "./neurons/Neuron.js";
 import { useState } from 'react';
+import Line from "./components/LineComponent"
 
 export default function Workspace() {
   const [neurons, setNeurons] = useState([]);
-  const [dragedFromPosition, setDragedFromPosition] = useState(null);
-  const [connectionLineStart, setConnectionLineStart] = useState({x: null,y:null});
+  const [connectionLineStart, setConnectionLineStart] = useState({x:null,y:null});
   const [renderedLines, setRenderedLines] = useState([]);
   const [mouseX, setMouseX] = useState(null);
   const [mouseY, setMouseY] = useState(null);
   const neuronSize =60;
-
   const handleClick = (event) => {    
-    if (dragedFromPosition) {
-      return;
-    }
-
     if (event.button !== 0) return; // Only handle left mouse click
-
     const x = event.clientX - neuronSize / 2;
     const y = event.clientY - neuronSize / 2;
 
@@ -28,24 +22,24 @@ export default function Workspace() {
       const minDistance = 1.5 * neuronSize;
       return distance < minDistance;
     });
-
     if (!isOccupied) {
-      setNeurons([...neurons, { x, y, isBlack: false }]);
+      setNeurons((prevNeurons) => {
+   //     console.log(neurons,"before")
+        const newNeurons = [...prevNeurons, { x, y, isBlack: false, connectedTo: [], index: prevNeurons.length }];
+ //       console.log(newNeurons, "after");
+        return newNeurons;
+      });
     } else {
       // Do something else
     }
   };
 
-
   React.useEffect(() => {
     const handleMouseMove = (event) => {
       setMouseX(event.clientX);
       setMouseY(event.clientY);
- 
     };
-  
     window.addEventListener('mousemove', handleMouseMove);
-  
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
@@ -60,8 +54,7 @@ export default function Workspace() {
       } else {
         return n;
       }
-    });
-  
+    }); 
     setNeurons(updatedNeurons);
   };
 
@@ -80,15 +73,22 @@ export default function Workspace() {
     event.preventDefault()
   }
 
-  const createLineStart = (node) => {
+  const renderNewLine = (node) => {
+    console.log(node)
+  if(node.type === "input"&&connectionLineStart.x === null){return}
     if (connectionLineStart.x !== null) {
       // Create new line object
       const newLine = {
-        start: { x: connectionLineStart.x, y: connectionLineStart.y },
-        end: { x: node.x + node.size / 2, y: node.y + node.size / 2 }
+        startPosition: { x: connectionLineStart.x, y: connectionLineStart.y },
+        endPosition: { x: node.x + node.size / 2, y: node.y + node.size / 2 },
+        fromNeuronIndex:null,
+        toNeuronIndex: null,
       };
       // Add new line to renderedLines array
-      setRenderedLines([...renderedLines, newLine]);
+      if(node.type === "input"){
+        setRenderedLines([...renderedLines, newLine]);
+      }
+       
       // Reset connectionLineStart
       setConnectionLineStart({ x: null, y: null });
       console.log(renderedLines)
@@ -96,55 +96,21 @@ export default function Workspace() {
       setConnectionLineStart({ x: node.x + node.size / 2, y: node.y + node.size / 2 });
     }
   };
-
-  function Line({ startCoords, endCoords = { x: mouseX, y: mouseY }, color}) {
-    const dx = endCoords.x - startCoords.x;
-    const dy = endCoords.y - startCoords.y;
-    const angle = Math.atan2(dy, dx);
-    const length = Math.sqrt(dx * dx + dy * dy);
-  
-    if (startCoords.x === null || mouseX.x === null) {
-      return null; // return null if coordinates are invalid
-    }
-  
-    return (
-      <div
-        style={{
-          position: 'absolute',
-          top: startCoords.y,
-          left: startCoords.x,
-          width: length,
-          height: '2px',
-          backgroundColor: color,
-          transform: `rotate(${angle}rad)`,
-          transformOrigin: '0 0',
-          pointerEvents: 'none',
-          zIndex: 3,
-        }}
-      />
-    );
-  }
-  
   
   const styles = {
     workspace: {
-      position: 'absolute',
+      position:'absolute',
       top: -20,
       left: 0,
       bottom: -20,
       right: -20,
-      height: 'window.innerWidth',
-      width: 'window.inneHeight',
       backgroundColor: 'pink',
-     // position: 'relative',
-     // height:"100vh",
-    //  width:"100vw"
     },
   };
 
   return (
     <div style={styles.workspace} onClick={handleClick} onContextMenu={preventContextMenu}  >
-       <Line startCoords={connectionLineStart} endCoords={{ x: mouseX+window.scrollX, y: mouseY +window.scrollY }} color={"lightGreen"}  />
+       <Line startCoords={connectionLineStart} endCoords={{ x: mouseX+window.scrollX, y: mouseY +window.scrollY+15 }} color={"lightGreen"}  />
       {neurons.map((neuron, index) => (
         <Neuron
           key={index}
@@ -163,21 +129,23 @@ export default function Workspace() {
           neurons={neurons}
           reverseColor={() => reverseColor(event, neuron)}  
           onRightClick={() => deleteNeuron(event,neuron)}
-          createLineStart={(node) => createLineStart(node)}          
+          renderNewLine={(node) => renderNewLine(node)}          
         />
       ))}
         {renderedLines.map((renderedLines, index) => (
-  <Line
-    startCoords={renderedLines.start}
-    endCoords={renderedLines.end}
-    color={"green"}
-    key={index}
-  />
-))}
+          <Line
+            startCoords={renderedLines.startPosition}
+            endCoords={renderedLines.endPosition}
+            color={"green"}
+            key={index}
+          />
+        ))}
     </div>
   );
 }
-
+     // position: 'relative',
+     // height:"100vh",
+    //  width:"100vw"
   
       /*if (
         mouseX < 0 ||
