@@ -24,9 +24,7 @@ export default function Workspace() {
     });
     if (!isOccupied) {
       setNeurons((prevNeurons) => {
-   //     console.log(neurons,"before")
-        const newNeurons = [...prevNeurons, { x, y, isBlack: false, connectedTo: [], index: prevNeurons.length }];
- //       console.log(newNeurons, "after");
+        const newNeurons = [...prevNeurons, { x, y, isBlack: false, connectedTo: [], index: prevNeurons.length, nodes: {input:{isGreen: false}, output:{isGreen: false}}}];
         return newNeurons;
       });
     } else {
@@ -129,7 +127,8 @@ export default function Workspace() {
           neurons={neurons}
           reverseColor={() => reverseColor(event, neuron)}  
           onRightClick={() => deleteNeuron(event,neuron)}
-          renderNewLine={(node) => renderNewLine(node)}          
+          renderNewLine={(node) => renderNewLine(node)}
+          nodesInfo={neuron.nodesInfo}          
         />
       ))}
         {renderedLines.map((renderedLines, index) => (
