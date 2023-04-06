@@ -25,7 +25,7 @@ export default function Workspace() {
     if (!isOccupied) {
       setNeurons((prevNeurons) => {
    //     console.log(neurons,"before")
-        const newNeurons = [...prevNeurons, { x, y, isBlack: false, connectedTo: [], index: prevNeurons.length }];
+        const newNeurons = [...prevNeurons, { x, y, isBlack: false, connectedTo: [], index: prevNeurons.length, nodes: {input:{isGreen: false}, output:{isGreen: false}}}];
  //       console.log(newNeurons, "after");
         return newNeurons;
       });
@@ -45,7 +45,7 @@ export default function Workspace() {
     };
   }, [mouseX, mouseY]);
 
-  const reverseColor = (event, neuron) => {
+  const reverseNeuronColor = (event, neuron) => {
     if (event.button !== 0) return; // Only handle left mouse button
   
     const updatedNeurons = neurons.map((n) => {
@@ -55,6 +55,19 @@ export default function Workspace() {
         return n;
       }
     }); 
+    setNeurons(updatedNeurons);
+  };
+  const reverseNodeColor = (neuron) => {
+    const updatedNeurons = neurons.map((n) => {
+      if (n.index === neuron.index) {
+        const updatedNodes = {...n.nodes};
+        updatedNodes.input.isGreen = !updatedNodes.input.isGreen;
+        updatedNodes.output.isGreen = !updatedNodes.output.isGreen;
+        return { ...n, nodes: updatedNodes };
+      } else {
+        return n;
+      }
+    });
     setNeurons(updatedNeurons);
   };
 
@@ -127,7 +140,8 @@ export default function Workspace() {
           }}
           setNeurons={setNeurons}
           neurons={neurons}
-          reverseColor={() => reverseColor(event, neuron)}  
+          reverseColor={() => reverseNeuronColor(event, neuron)}  
+          reverseNodeColor={() => reverseNodeColor(neuron)}
           onRightClick={() => deleteNeuron(event,neuron)}
           renderNewLine={(node) => renderNewLine(node)}          
         />

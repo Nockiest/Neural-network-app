@@ -3,7 +3,7 @@ import * as React from 'react';
 import Slider from './Slider';
 import Node from "./ConnectionNode.js"
 
-function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick, onMouseDown, onMouseUp, renderNewLine, key }) {
+function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick, onMouseDown, onMouseUp, renderNewLine, key,reverseNodeColor }) {
   const [biasValue, setBiasValue] = useState(bias);
   const [weightValue, setWeightValue] = useState(weight);
   const nodeSize = size*0.2
@@ -11,7 +11,6 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
     { x: size/2-size*0.12, y: -nodeSize, isGreen: false,type:"output",parentKey:key},
     { x: size/2-size*0.12, y: size, isGreen: false,type:"input", parentKey:key},
   ]);
- console.log(key)
   const handleSliderValueChange = (name, value) => {
     if (name === "Bias") {
       setBiasValue(value);
@@ -21,13 +20,6 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
       // do something with the weight value
     }
   };
-
-  const reverseNodeColor = (index) => {
-    const newNodes = [...nodes];
-    newNodes[index].isGreen = !newNodes[index].isGreen;
-    setNodes(newNodes);
-  };
-
   const styles = {
     neuron: {
       width: `${size}px`,
@@ -67,7 +59,7 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
             y={node.y}
             parrentCoors={{x:x,y:y}}
             isGreen={node.isGreen}
-            onClick={() => reverseNodeColor(index)}
+            onClick={reverseNodeColor}
             renderNewLine={renderNewLine}
             strength={node.value}
             type = {node.type}
