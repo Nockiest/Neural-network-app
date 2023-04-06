@@ -11,6 +11,7 @@ export default function Workspace() {
   const [mouseY, setMouseY] = useState(null);
   const neuronSize =60;
   const handleClick = (event) => {    
+     
     if (event.button !== 0) return; // Only handle left mouse click
     const x = event.clientX - neuronSize / 2;
     const y = event.clientY - neuronSize / 2;
@@ -31,6 +32,31 @@ export default function Workspace() {
       // Do something else
     }
   };
+  const reverseNeuronColor = (event, neuron) => {  
+    const updatedNeurons = neurons.map((n) => {
+      if (n === neuron) {
+        return { ...n, isBlack: !n.isBlack };
+      } else {
+        return n;
+      }
+    }); 
+    setNeurons(updatedNeurons);
+  };  
+  const reverseNodeColor = (index) => {
+  const updatedNeurons = neurons.map((n) => {
+      if (n === neuron) {
+           //zkontroluj jestli takový klik neporušuje podmínky
+           //reverseNeuronColor = (typ neuron, neuron)
+        return { ...n,  
+          // set the right neuron to green
+          // n.nodes[typ neuronu: !isGreen]         
+        };
+      } else {
+        return n;
+      }
+    }); 
+    setNeurons(updatedNeurons);
+  };
 
   React.useEffect(() => {
     const handleMouseMove = (event) => {
@@ -42,19 +68,6 @@ export default function Workspace() {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, [mouseX, mouseY]);
-
-  const reverseColor = (event, neuron) => {
-    if (event.button !== 0) return; // Only handle left mouse button
-  
-    const updatedNeurons = neurons.map((n) => {
-      if (n === neuron) {
-        return { ...n, isBlack: !n.isBlack };
-      } else {
-        return n;
-      }
-    }); 
-    setNeurons(updatedNeurons);
-  };
 
    const deleteNeuron = (event,neuron) => {  
      const newNeurons = neurons.filter((n) => { 
@@ -115,20 +128,19 @@ export default function Workspace() {
           size={neuronSize}
           x={neuron.x}
           y={neuron.y}
-          isBlack={neuron.isBlack}
+          isBlack={neuron.isBlack} 
+          onClick={handleClick}           
+          reverseColor={() => reverseColor(event, neuron)}  
+          onRightClick={() => deleteNeuron(event,neuron)}
+          renderNewLine={(node) => renderNewLine(node)}
+          nodesInfo={neuron.nodesInfo}  
           style={{
             position: 'absolute',
             top: neuron.y,
             left: neuron.x,
             border: '0.05rem solid black',
             backgroundColor: neuron.isBlack ? 'black' : 'white',
-          }}
-          setNeurons={setNeurons}
-          neurons={neurons}
-          reverseColor={() => reverseColor(event, neuron)}  
-          onRightClick={() => deleteNeuron(event,neuron)}
-          renderNewLine={(node) => renderNewLine(node)}
-          nodesInfo={neuron.nodesInfo}          
+          }}        
         />
       ))}
         {renderedLines.map((renderedLines, index) => (
