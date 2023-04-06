@@ -31,6 +31,7 @@ function App() {
 
 export default App;
  
+//zjisti proč nefunguje index
 // zajisti, aby se vždy měnila barva pouze jednoho neuronu
 // měň tuto barvu na základě pravidle tvé simulace
 // stylizuj ji podle hodnoty

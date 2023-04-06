@@ -14,7 +14,7 @@ export default function Workspace() {
     if (event.button !== 0) return; // Only handle left mouse click
     const x = event.clientX - neuronSize / 2;
     const y = event.clientY - neuronSize / 2;
-
+  
     const isOccupied = neurons.some((neuron) => {
       const distance = Math.sqrt(
         Math.pow(neuron.x - x, 2) + Math.pow(neuron.y - y, 2)
@@ -24,9 +24,7 @@ export default function Workspace() {
     });
     if (!isOccupied) {
       setNeurons((prevNeurons) => {
-   //     console.log(neurons,"before")
         const newNeurons = [...prevNeurons, { x, y, isBlack: false, connectedTo: [], index: prevNeurons.length, nodes: {input:{isGreen: false}, output:{isGreen: false}}}];
- //       console.log(newNeurons, "after");
         return newNeurons;
       });
     } else {
@@ -57,14 +55,13 @@ export default function Workspace() {
     }); 
     setNeurons(updatedNeurons);
   };
-  const reverseNodeColor = (neuron) => {
-    console.log(neuron,"xyz")
+  const reverseNodeColor = (node) => {
+    console.log( node,"node")
     const updatedNeurons = neurons.map((n) => {
-      if (n.index === neuron.index) {
+      if (n.index === node.parentIndex) {
         const updatedNodes = {...n.nodes};
         updatedNodes.input.isGreen = !updatedNodes.input.isGreen;
         updatedNodes.output.isGreen = !updatedNodes.output.isGreen;
-        console.log(neuron,"xyz")
         return { ...n, nodes: updatedNodes };
       } else {
         return n;
@@ -102,8 +99,10 @@ export default function Workspace() {
       if(node.type === "input"){
         setRenderedLines([...renderedLines, newLine]);
       }
+       
       // Reset connectionLineStart
       setConnectionLineStart({ x: null, y: null });
+      //console.log(renderedLines)
     } else {
       setConnectionLineStart({ x: node.x + node.size / 2, y: node.y + node.size / 2 });
     }
@@ -123,27 +122,31 @@ export default function Workspace() {
   return (
     <div style={styles.workspace} onClick={handleClick} onContextMenu={preventContextMenu}  >
        <Line startCoords={connectionLineStart} endCoords={{ x: mouseX+window.scrollX, y: mouseY +window.scrollY+15 }} color={"lightGreen"}  />
-      {neurons.map((neuron, index) => (
-        <Neuron
-          key={index}
-          size={neuronSize}
-          x={neuron.x}
-          y={neuron.y}
-          isBlack={neuron.isBlack}
-          style={{
-            position: 'absolute',
-            top: neuron.y,
-            left: neuron.x,
-            border: '0.05rem solid black',
-            backgroundColor: neuron.isBlack ? 'black' : 'white',
-          }}
-          nodeInformation={neuron.nodes}
-          reverseColor={() => reverseNeuronColor(event, neuron)}  
-          reverseNodeColor={() => reverseNodeColor(neuron)}
-          onRightClick={() => deleteNeuron(event,neuron)}
-          renderNewLine={(node) => renderNewLine(node)}          
-        />
-      ))}
+       {neurons.map((neuron, index) => {
+  console.log(index);
+  return (
+    <Neuron
+      key={index}
+      size={neuronSize}
+      x={neuron.x}
+      y={neuron.y}
+      isBlack={neuron.isBlack}
+      style={{
+        position: 'absolute',
+        top: neuron.y,
+        left: neuron.x,
+        border: '0.05rem solid black',
+        backgroundColor: neuron.isBlack ? 'black' : 'white',
+      }}
+      setNeurons={setNeurons}
+      neurons={neurons}
+      reverseColor={() => reverseNeuronColor(event, neuron)}  
+      reverseNodeColor={(node) => reverseNodeColor(node)}
+      onRightClick={() => deleteNeuron(event,neuron)}
+      renderNewLine={(node) => renderNewLine(node)}          
+    />
+  );
+})}
         {renderedLines.map((renderedLines, index) => (
           <Line
             startCoords={renderedLines.startPosition}
@@ -159,25 +162,6 @@ export default function Workspace() {
      // height:"100vh",
     //  width:"100vw"
   
-      /*if (
-        mouseX < 0 ||
-        mouseX > window.innerWidth ||
-        mouseY < 0 ||
-        mouseY > window.innerHeight
-      ) {
-        console.log('Cursor is outside',mouseX,mouseY,window.innerHeight,window.innerWidth, mouseX < 0 ||
-        mouseX > window.innerWidth ||
-        mouseY < 0 ||
-        mouseY > window.innerHeight);
-        
-        
-      } else {
-        console.log('Cursor is inside',mouseX,mouseY,window.innerWidth,window.innerHeight, mouseX < 0 ||
-        mouseX > window.innerWidth ||
-        mouseY < 0 ||
-        mouseY > window.innerHeight);
-      }*/
-
 
 /*const dragNeuron = (event, neuron) => {
   if (dragedFromPosition) {
@@ -223,6 +207,15 @@ const releaseNeuron = (event, neuron) => {
   const handleMouseUp = () => {
     setDraggedNeuron(null);
   };*/
+
+  
+  // const [draggedNeuron, setDraggedNeuron] = useState(null);
+
+     /* const distance = Math.sqrt(
+        Math.pow(neuron.x + neuronSize / 2 - offsetX, 2) + Math.pow(neuron.y + neuronSize / 2 - offsetY, 2)
+      );
+      const maxDistance = neuronSize / 2;
+      return distance > maxDistance;*/
 
   
   // const [draggedNeuron, setDraggedNeuron] = useState(null);
