@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import * as React from 'react';
 
-export default function Node({ size, x, y,parentIndex,parrentCoors, isGreen, onClick, renderNewLine,stregth, type }) {
-    console.log({size, x, y,parentIndex,parrentCoors, isGreen, onClick, renderNewLine,stregth, type})
+export default function Node({ size, x, y,parentIndex,parentCoords, isGreen, onClick, renderNewLine,stregth, type }) {
+    console.log(size, x, y,parentIndex,parentCoords, isGreen, onClick, renderNewLine,stregth, type,parentCoords) 
   const handleClick = (e) => {
     e.stopPropagation( ); 
-    onClick( size, x, y,parentIndex,parrentCoors, isGreen, onClick, renderNewLine,stregth, type); 
-    renderNewLine({x:parrentCoors.x+x,y:parrentCoors.y+y,size:size, type:type})
+    onClick( {size, x, y,parentIndex,parentCoords, isGreen, onClick, renderNewLine,stregth, type}); 
+    renderNewLine({x:parentCoords.x+x,y:parentCoords.y+y,size:size, type:type})
   };
 
   const styles = {
