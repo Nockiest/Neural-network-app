@@ -24,7 +24,7 @@ export default function Workspace() {
     });
     if (!isOccupied) {
       setNeurons((prevNeurons) => {
-        const newNeurons = [...prevNeurons, { x, y, isBlack: false, connectedTo: [], index: prevNeurons.length, nodes: {input:{isGreen: false}, output:{isGreen: false}}}];
+        const newNeurons = [...prevNeurons, { x, y, isBlack: false, connectedTo: [], id: Math.random()*1000, nodes: {input:{isGreen: false}, output:{isGreen: false}}}];
         return newNeurons;
       });
     } else {
@@ -122,11 +122,10 @@ export default function Workspace() {
   return (
     <div style={styles.workspace} onClick={handleClick} onContextMenu={preventContextMenu}  >
        <Line startCoords={connectionLineStart} endCoords={{ x: mouseX+window.scrollX, y: mouseY +window.scrollY+15 }} color={"lightGreen"}  />
-       {neurons.map((neuron, index) => {
-  console.log(index);
+       {neurons.map((neuron, id) => {
   return (
     <Neuron
-      key={index}
+      id={id}
       size={neuronSize}
       x={neuron.x}
       y={neuron.y}

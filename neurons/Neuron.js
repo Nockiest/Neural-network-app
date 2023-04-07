@@ -3,13 +3,13 @@ import * as React from 'react';
 import Slider from './Slider';
 import Node from "./ConnectionNode.js"
 
-function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick, onMouseDown, onMouseUp, renderNewLine, key,reverseNodeColor }) {
+function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick, onMouseDown, onMouseUp, renderNewLine, id,reverseNodeColor }) {
   const [biasValue, setBiasValue] = useState(bias);
   const [weightValue, setWeightValue] = useState(weight);
   const nodeSize = size*0.2
   const [nodes, setNodes] = useState([
-    { x: size/2-size*0.12, y: -nodeSize, isGreen: false,type:"output",parentKey:key},
-    { x: size/2-size*0.12, y: size, isGreen: false,type:"input", parentKey:key},
+    { x: size/2-size*0.12, y: -nodeSize, isGreen: false,type:"output",parentKey:id},
+    { x: size/2-size*0.12, y: size, isGreen: false,type:"input", parentKey:id},
   ]);
   const handleSliderValueChange = (name, value) => {
     if (name === "Bias") {
@@ -20,6 +20,7 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
       // do something with the weight value
     }
   };
+  conosle.log(id)
   const styles = {
     neuron: {
       width: `${size}px`,
