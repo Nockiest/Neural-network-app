@@ -4,20 +4,7 @@ import Slider from './Slider';
 import Node from './ConnectionNode.js';
 import { WorkspaceContext } from '../workspace';
 
-function Neuron({
-  size,
-  isBlack,
-  bias,
-  weight,
-  x,
-  y,
-  reverseColor,
-  onRightClick,
-  onMouseDown,
-  onMouseUp,
-  renderNewLine,
-  id,
-  nodesInfo,
+function Neuron({size,isBlack,bias, weight, x, y,reverseColor,onRightClick,onMouseDown,onMouseUp,renderNewLine,id,nodesInfo,
 }) {
   const { neurons, setNeurons } = useContext(WorkspaceContext);
   const nodeSize = size * 0.2;
@@ -26,17 +13,17 @@ function Neuron({
     { x: size / 2 - size * 0.12, y: size, type: 'input', parentKey: id },
   ]);
   const handleSliderValueChange = (name, value) => {
-    console.log(name, value);
-    const updatedNeurons = neurons.map((n) => {
+    console.log("I")
+    const updatedNeurons = neurons.map((n) => {   
       if (n.id === id) {
-        if (name === 'bias') {
+        if (name === "bias"){
           return { ...n, bias: value };
-        } else if (name === 'weight') {
+        } else if (name === "weight") {
           return { ...n, weight: value };
         }
       } else {
         return n;
-      }
+      } 
     });
     setNeurons(updatedNeurons);
   };

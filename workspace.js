@@ -103,7 +103,7 @@ export default function Workspace() {
       const newLine = {
         startPosition: { x: connectionLineStart.x, y: connectionLineStart.y },
         endPosition: { x: node.parentCoords.x + node.x + node.size / 2, y: node.parentCoords.y + node.y+ node.size / 2 },
-        endNeuron: neuron.id,
+        endNeuronId: neuron.id,
         startNeuronId: connectionLineStart.startNeuronId,
       };
       
@@ -179,11 +179,7 @@ export default function Workspace() {
          </WorkspaceContext.Provider>
     </div>
   );
-}
-     // position: 'relative',
-     // height:"100vh",
-    //  width:"100vw"
-  
+} 
 
 /*const dragNeuron = (event, neuron) => {
   if (dragedFromPosition) {

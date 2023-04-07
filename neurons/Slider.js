@@ -55,7 +55,7 @@ function Slider({ name, x, y, value, updateValue, size }) {
   };
   return (
     <div style={styles.sliderContainer}>
-     <div style={styles.label}>{name}</div>
+      <div style={styles.label}>{name}</div>
       <input
         type="range"
         min="-1"
@@ -63,8 +63,8 @@ function Slider({ name, x, y, value, updateValue, size }) {
         step="0.2"
         value={value}
         style={styles.slider}
-        onChange={(e) => updateValue(name, e.target.value)}
-      />     
+        onChange={(e) => updateValue(name, e.target.value)} // pass name as a string here
+      />  
     </div>
   );
 }
