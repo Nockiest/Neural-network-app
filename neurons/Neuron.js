@@ -20,7 +20,7 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
       // do something with the weight value
     }
   };
-  conosle.log(id)
+  console.log(id)
   const styles = {
     neuron: {
       width: `${size}px`,
@@ -55,7 +55,7 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
         {nodes.map((node, index) => (
           <Node
             key={index}
-            parentIndex = {key}
+            parentIndex = {id}
             size={nodeSize}
             x={node.x}
             y={node.y}

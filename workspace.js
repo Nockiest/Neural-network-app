@@ -2,6 +2,9 @@ import * as React from 'react';
 import Neuron from "./neurons/Neuron.js";
 import { useState } from 'react';
 import Line from "./components/LineComponent"
+import { v4 as uuidv4 } from 'uuid';
+ 
+
 
 export default function Workspace() {
   const [neurons, setNeurons] = useState([]);
@@ -24,7 +27,7 @@ export default function Workspace() {
     });
     if (!isOccupied) {
       setNeurons((prevNeurons) => {
-        const newNeurons = [...prevNeurons, { x, y, isBlack: false, connectedTo: [], id: Math.random()*1000, nodes: {input:{isGreen: false}, output:{isGreen: false}}}];
+        const newNeurons = [...prevNeurons, { x, y, isBlack: false, connectedTo: [], id: uuidv4(), nodes: {input:{isGreen: false}, output:{isGreen: false}}}];
         return newNeurons;
       });
     } else {
