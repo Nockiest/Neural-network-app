@@ -1,18 +1,21 @@
 import * as React from 'react';
 import Neuron from "./neurons/Neuron.js";
-import { useState } from 'react';
+import { useState, createContext } from 'react';
 import Line from "./components/LineComponent"
 import { v4 as uuidv4 } from 'uuid';
  
-
+export const WorkspaceContext = createContext(null);
 
 export default function Workspace() {
+   
   const [neurons, setNeurons] = useState([]);
   const [connectionLineStart, setConnectionLineStart] = useState({x:null,y:null});
   const [renderedLines, setRenderedLines] = useState([]);
   const [mouseX, setMouseX] = useState(null);
   const [mouseY, setMouseY] = useState(null);
+  
   const neuronSize =60;
+
   const handleClick = (event) => {    
     if (event.button !== 0) return; // Only handle left mouse click
     const x = event.clientX - neuronSize / 2;
@@ -27,7 +30,7 @@ export default function Workspace() {
     });
     if (!isOccupied) {
       setNeurons((prevNeurons) => {
-        const newNeurons = [...prevNeurons, { x, y, isBlack: false, connectedTo: [], id: uuidv4(), nodes: {input:{isGreen: false}, output:{isGreen: false}}}];
+        const newNeurons = [...prevNeurons, { x, y, isBlack: false, connectedTo: [], id: uuidv4(), bias: 0, weight: 0, nodes: {inputActive:false, outputActive: false}}];
         return newNeurons;
       });
     } else {
@@ -59,20 +62,19 @@ export default function Workspace() {
     setNeurons(updatedNeurons);
   };
   const reverseNodeColor = (node) => {
-   console.log( node,"node")
     const updatedNeurons = neurons.map((n) => {
       
       if (n.id === node.parentIndex) {
       
         const updatedNodes = {...n.nodes};
-        node.type==="output"?updatedNodes.output.isGreen=!updatedNodes.output.isGreen :updatedNodes.input.isGreen = !updatedNodes.input.isGreen;
+        node.type==="output"?updatedNodes.outputActive=!updatedNodes.outputActive :updatedNodes.inputActive = !updatedNodes.inputActive;
         return { ...n, nodes: updatedNodes };
       } else {
         return n;
       }
     });
     setNeurons(updatedNeurons);
-  };
+  };//Je mi ta funkce ještě k něčemu??
 
    const deleteNeuron = (event,neuron) => {  
      const newNeurons = neurons.filter((n) => { 
@@ -90,25 +92,35 @@ export default function Workspace() {
   }
 
   const renderNewLine = (node) => {
+    if(node === undefined){return}
+    
+    const neuron = neurons.find((n) => n.id === node.parentIndex);
   if(node.type === "input"&&connectionLineStart.x === null){return}
-    if (connectionLineStart.x !== null) {
+
+    if (connectionLineStart.x !== null) {   
       // Create new line object
+      console.log(connectionLineStart.startNeuronId)
       const newLine = {
         startPosition: { x: connectionLineStart.x, y: connectionLineStart.y },
-        endPosition: { x: node.x + node.size / 2, y: node.y + node.size / 2 },
-        fromNeuronIndex:null,
-        toNeuronIndex: null,
+        endPosition: { x: node.parentCoords.x + node.x + node.size / 2, y: node.parentCoords.y + node.y+ node.size / 2 },
+        endNeuron: neuron.id,
+        startNeuronId: connectionLineStart.startNeuronId,
       };
+      
       // Add new line to renderedLines array
       if(node.type === "input"){
         setRenderedLines([...renderedLines, newLine]);
+         
+        reverseNodeColor(node)
       }
        
       // Reset connectionLineStart
       setConnectionLineStart({ x: null, y: null });
-      //console.log(renderedLines)
     } else {
-      setConnectionLineStart({ x: node.x + node.size / 2, y: node.y + node.size / 2 });
+      setConnectionLineStart({ x: node.parentCoords.x + node.size / 2+node.x, y: node.parentCoords.y + node.size / 2 +node.y, startNeuronId:neuron.id});
+      console.log(neuron)
+      console.log(renderedLines)
+      reverseNodeColor(node)
     }
   };
   
@@ -124,39 +136,47 @@ export default function Workspace() {
   };
 
   return (
-    <div style={styles.workspace} onClick={handleClick} onContextMenu={preventContextMenu}  >
-       <Line startCoords={connectionLineStart} endCoords={{ x: mouseX+window.scrollX, y: mouseY +window.scrollY+15 }} color={"lightGreen"}  />
-       {neurons.map((neuron) => {
-  return (
-    <Neuron
-      id={neuron.id}
-      size={neuronSize}
-      x={neuron.x}
-      y={neuron.y}
-      isBlack={neuron.isBlack}
-      nodeColors = {neuron.nodes}     
-      reverseColor={() => reverseNeuronColor(neuron)}  
-      reverseNodeColor={(node) => reverseNodeColor(node)}
-      onRightClick={() => deleteNeuron(event,neuron)}
-      renderNewLine={(node) => renderNewLine(node)} 
-      style={{
-        position: 'absolute',
-        top: neuron.y,
-        left: neuron.x,
-        border: '0.05rem solid black',
-        backgroundColor: neuron.isBlack ? 'black' : 'white',
-      }}         
-    />
-  );
-})}
-        {renderedLines.map((renderedLines, index) => (
-          <Line
-            startCoords={renderedLines.startPosition}
-            endCoords={renderedLines.endPosition}
-            color={"green"}
-            key={index}
-          />
-        ))}
+    <div style={styles.workspace} onClick={handleClick} onContextMenu={preventContextMenu}>
+        
+      {neurons.map((neuron) => {
+        return (
+          <WorkspaceContext.Provider value={{ neurons, setNeurons }} key={neuron.id}>
+            <Neuron
+              id={neuron.id}
+              size={neuronSize}
+              x={neuron.x}
+              y={neuron.y}
+              isBlack={neuron.isBlack}
+              nodesInfo={neuron.nodes}
+              bias={neuron.bias}
+              weight={neuron.weight} 
+              reverseColor={() => reverseNeuronColor(neuron)}
+              onRightClick={(event) => deleteNeuron(event, neuron)}
+              renderNewLine={(node) => renderNewLine(node)}
+              style={{
+                position: 'absolute',
+                top: neuron.y,
+                left: neuron.x,
+                border: '0.05rem solid black',
+                backgroundColor: neuron.isBlack ? 'black' : 'white',
+              }}
+            />
+          </WorkspaceContext.Provider>
+        );
+      })}
+     {renderedLines.map((line, index) => {
+            <WorkspaceContext.Provider value={{ neurons, setNeurons }}>
+       <Line
+        startCoords={line.startPosition}
+        endCoords={line.endPosition}
+        color={"green"}
+        startNeuronId={line.startNeuronId}
+      />
+         </WorkspaceContext.Provider>
+        })}
+        <WorkspaceContext.Provider value={{ neurons, setNeurons }}>
+         <Line startCoords={connectionLineStart} endCoords={{ x: mouseX + window.scrollX, y: mouseY + window.scrollY + 15 }} color={"lightGreen"} startNeuronId={connectionLineStart.startNeuronId} />
+         </WorkspaceContext.Provider>
     </div>
   );
 }

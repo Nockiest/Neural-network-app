@@ -1,24 +1,30 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import * as React from 'react';
 import Slider from './Slider';
-import Node from "./ConnectionNode.js"
+import Node from "./ConnectionNode.js";
+import { WorkspaceContext } from '../workspace';
 
-function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick, onMouseDown, onMouseUp, renderNewLine, id,reverseNodeColor,nodeColors }) {
-  const [biasValue, setBiasValue] = useState(bias);
-  const [weightValue, setWeightValue] = useState(weight);
+function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick, onMouseDown, onMouseUp, renderNewLine, id,nodesInfo }) {
+  
+  const { neurons, setNeurons } = useContext(WorkspaceContext)
   const nodeSize = size*0.2
   const [nodes, setNodes] = useState([
     { x: size/2-size*0.12, y: -nodeSize, type:"output",parentKey:id},
     { x: size/2-size*0.12, y: size, type:"input", parentKey:id},
   ]);
   const handleSliderValueChange = (name, value) => {
-    if (name === "Bias") {
-      setBiasValue(value);
-      // do something with the bias value
-    } else if (name === "Weight") {
-      setWeightValue(value);
-      // do something with the weight value
-    }
+    const updatedNeurons = neurons.map((n) => {   
+      if (n.id === id) {
+        if (name === "bias"){
+          return { ...n, bias: value };
+        } else if (name === "weight") {
+          return { ...n, weight: value };
+        }
+      } else {
+        return n;
+      } 
+    });
+    setNeurons(updatedNeurons);
   };
   const styles = {
     neuron: {
@@ -40,12 +46,6 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
       position: 'absolute',
       zIndex: 3,
     },
-    output:{
-      isGreen:nodeColors.output.isGreen
-    },
-    input:{
-      isGreen:nodeColors.input.isGreen
-    }
   };
 
   return (
@@ -65,33 +65,31 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
             x={node.x}
             y={node.y}
             parentCoords={{ x: x, y: y }}
-            isGreen={node.type === "input"? styles.input.isGreen:styles.output.isGreen}
-            onClick={reverseNodeColor}
-            renderNewLine={renderNewLine}
+            active = {node.type==="inputActive"?nodesInfo.inputActive:nodesInfo.outputActive}
+            strength={node.type==="inputActive"?bias:weight}
+            onClick={renderNewLine}
             strength={node.value}
             type={node.type}
-            parentInformation={{}}
+            
           />
         );
       })}
        </div>
       <Slider
-        name="Weight"
+        name={"weight"}
         x={x}
         y={y}
-        value={biasValue}
-        setValue={setBiasValue}
+        value={weight}
         size={size}
-        sendValue={(name, value) => handleSliderValueChange(name, value)}      
+        updateValue={(name, value) => handleSliderValueChange(name, value)}      
       />
       <Slider
-        name="Bias"
+        name={"bias"}
         x={x}
         y={y+size*0.7}
-        value={weightValue}
-        setValue={setWeightValue}
+        value={bias}    
         size={size}
-        sendValue={(name, value) => handleSliderValueChange(name, value)}
+        updateValue={(name, value) => handleSliderValueChange(name, value)}
       />
     </div>
   )
@@ -102,7 +100,7 @@ export default Neuron
 
 
 
-
+/*isGreen={node.type === "input"? styles.input.isGreen:styles.output.isGreen}*/
 /*const handleNeuronClick = (event) => {
     if (event.button === 0) { // left mouse button
       setIsBlack(!isBlack);

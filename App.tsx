@@ -11,8 +11,17 @@ function App() {
     setIsToolbarVisible(!isToolbarVisible);
   };
 
+  const handleMouseDown = (e) => {
+    if (e.button === 0) {
+      e.preventDefault();
+    }
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
+    <div
+      style={{ display: "flex", flexDirection: "row", height: "100vh" }}
+      onMouseDown={handleMouseDown}
+    >
       {
         <div style={{backgroundColor: 'lightgray', position:"fixed", zIndex: 1 }}>
           <Toolbar toggleVisible={toggleToolbar}

@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import * as React from 'react';
 
-export default function Node({ size, x, y,parentIndex,parentCoords, isGreen, onClick, renderNewLine,stregth, type }) {
+export default function Node({ size, x, y, parentIndex, parentCoords, active, onClick, strength, type }) {
   const handleClick = (e) => {
-    e.stopPropagation( ); 
-    onClick( {size, x, y,parentIndex,parentCoords, isGreen, onClick, renderNewLine,stregth, type}); 
-    renderNewLine({x:parentCoords.x+x,y:parentCoords.y+y,size:size, type:type})
+    e.stopPropagation();
+    onClick({ size, x, y, parentIndex, parentCoords, isGreen: active, onClick, strength, type });
   };
 
   const styles = {
@@ -13,7 +12,7 @@ export default function Node({ size, x, y,parentIndex,parentCoords, isGreen, onC
       width: `${size}px`,
       height: `${size}px`,
       borderRadius: "50%",
-      backgroundColor: isGreen ? "green" : "white",
+      backgroundColor: active ? strength > 0 ? "green" : "purple" : "white",
       border: "1px solid black",
       position: "absolute",
       top: y,
@@ -22,6 +21,6 @@ export default function Node({ size, x, y,parentIndex,parentCoords, isGreen, onC
       cursor: "pointer",
     },
   };
-  
-  return  <div style={styles.node} onClick={handleClick} />
+
+  return <div style={styles.node} onClick={handleClick} />;
 }

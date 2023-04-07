@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-function Slider({ name, x, y, value, setValue, size }) {
+function Slider({ name, x, y, value, updateValue, size }) {
   const [color, setColor] = useState('black');
 
   React.useEffect(() => {
@@ -32,8 +32,6 @@ function Slider({ name, x, y, value, setValue, size }) {
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
       textAlign: 'center',
-     
-    //  border: "solid 2px black"
     },
     slider: {
       width: '80%',
@@ -53,17 +51,11 @@ function Slider({ name, x, y, value, setValue, size }) {
       transform: "translate(-50%, -50%)",
       textStroke: "1px #111111",
       textFillColor: color,
-      //margin: "-5px"
        },
   };
-
-  const handleValueChange = (event) => {
-    setValue(event.target.value);
-  };
-
   return (
     <div style={styles.sliderContainer}>
-      {/*name === 'Bias' &&*/ <div style={styles.label}>{name}</div>}
+     <div style={styles.label}>{name}</div>
       <input
         type="range"
         min="-1"
@@ -71,15 +63,11 @@ function Slider({ name, x, y, value, setValue, size }) {
         step="0.2"
         value={value}
         style={styles.slider}
-        onChange={handleValueChange}
-      />
-      
+        onChange={(e) => updateValue(name, e.target.value)}
+      />     
     </div>
   );
 }
-
-// {name === 'Weight' && <div style={styles.label}>{name}</div>}
-
 
  
 
