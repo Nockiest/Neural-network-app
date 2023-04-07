@@ -3,13 +3,13 @@ import * as React from 'react';
 import Slider from './Slider';
 import Node from "./ConnectionNode.js"
 
-function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick, onMouseDown, onMouseUp, renderNewLine, id,reverseNodeColor }) {
+function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick, onMouseDown, onMouseUp, renderNewLine, id,reverseNodeColor,nodeColors }) {
   const [biasValue, setBiasValue] = useState(bias);
   const [weightValue, setWeightValue] = useState(weight);
   const nodeSize = size*0.2
   const [nodes, setNodes] = useState([
-    { x: size/2-size*0.12, y: -nodeSize, isGreen: false,type:"output",parentKey:id},
-    { x: size/2-size*0.12, y: size, isGreen: false,type:"input", parentKey:id},
+    { x: size/2-size*0.12, y: -nodeSize, isGreen: nodeColors.input.isGreen,type:"output",parentKey:id},
+    { x: size/2-size*0.12, y: size, isGreen: nodeColors.output.isGreen,type:"input", parentKey:id},
   ]);
   const handleSliderValueChange = (name, value) => {
     if (name === "Bias") {
@@ -20,7 +20,6 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
       // do something with the weight value
     }
   };
-  console.log(id)
   const styles = {
     neuron: {
       width: `${size}px`,
@@ -40,7 +39,6 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
     slider: {
       position: 'absolute',
       zIndex: 3,
-  
     },
   };
 
@@ -52,22 +50,25 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
        onContextMenu={onRightClick} 
        onMouseDown={onMouseDown} 
        onMouseUp={onMouseUp}>
-        {nodes.map((node, index) => (
+       {nodes.map((node, index) => {
+        //console.log(node.isGreen);
+        return (
           <Node
             key={index}
-            parentIndex = {id}
+            parentIndex={id}
             size={nodeSize}
             x={node.x}
             y={node.y}
-            parrentCoors={{x:x,y:y}}
+            parentCoords={{ x: x, y: y }}
             isGreen={node.isGreen}
             onClick={reverseNodeColor}
             renderNewLine={renderNewLine}
             strength={node.value}
-            type = {node.type}
-            parentInformation = {}
+            type={node.type}
+            parentInformation={{}}
           />
-        ))}
+        );
+      })}
        </div>
       <Slider
         name="Weight"

@@ -59,12 +59,13 @@ export default function Workspace() {
     setNeurons(updatedNeurons);
   };
   const reverseNodeColor = (node) => {
-    console.log( node,"node")
+   console.log( node,"node")
     const updatedNeurons = neurons.map((n) => {
-      if (n.index === node.parentIndex) {
+      
+      if (n.id === node.parentIndex) {
+      
         const updatedNodes = {...n.nodes};
-        updatedNodes.input.isGreen = !updatedNodes.input.isGreen;
-        updatedNodes.output.isGreen = !updatedNodes.output.isGreen;
+        node.type==="output"?updatedNodes.output.isGreen=!updatedNodes.output.isGreen :updatedNodes.input.isGreen = !updatedNodes.input.isGreen;
         return { ...n, nodes: updatedNodes };
       } else {
         return n;
@@ -125,27 +126,26 @@ export default function Workspace() {
   return (
     <div style={styles.workspace} onClick={handleClick} onContextMenu={preventContextMenu}  >
        <Line startCoords={connectionLineStart} endCoords={{ x: mouseX+window.scrollX, y: mouseY +window.scrollY+15 }} color={"lightGreen"}  />
-       {neurons.map((neuron, id) => {
+       {neurons.map((neuron) => {
   return (
     <Neuron
-      id={id}
+      id={neuron.id}
       size={neuronSize}
       x={neuron.x}
       y={neuron.y}
       isBlack={neuron.isBlack}
+      nodeColors = {neuron.nodes}     
+      reverseColor={() => reverseNeuronColor(neuron)}  
+      reverseNodeColor={(node) => reverseNodeColor(node)}
+      onRightClick={() => deleteNeuron(event,neuron)}
+      renderNewLine={(node) => renderNewLine(node)} 
       style={{
         position: 'absolute',
         top: neuron.y,
         left: neuron.x,
         border: '0.05rem solid black',
         backgroundColor: neuron.isBlack ? 'black' : 'white',
-      }}
-      setNeurons={setNeurons}
-      neurons={neurons}
-      reverseColor={() => reverseNeuronColor(event, neuron)}  
-      reverseNodeColor={(node) => reverseNodeColor(node)}
-      onRightClick={() => deleteNeuron(event,neuron)}
-      renderNewLine={(node) => renderNewLine(node)}          
+      }}         
     />
   );
 })}

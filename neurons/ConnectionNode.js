@@ -2,9 +2,10 @@ import { useState } from 'react';
 import * as React from 'react';
 
 export default function Node({ size, x, y,parentIndex,parrentCoors, isGreen, onClick, renderNewLine,stregth, type }) {
+    console.log({size, x, y,parentIndex,parrentCoors, isGreen, onClick, renderNewLine,stregth, type})
   const handleClick = (e) => {
     e.stopPropagation( ); 
-    onClick({ size, x, y,parentIndex,parrentCoors, isGreen, onClick, renderNewLine,stregth, type }); 
+    onClick( size, x, y,parentIndex,parrentCoors, isGreen, onClick, renderNewLine,stregth, type); 
     renderNewLine({x:parrentCoors.x+x,y:parrentCoors.y+y,size:size, type:type})
   };
 
