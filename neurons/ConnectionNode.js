@@ -2,7 +2,6 @@ import { useState } from 'react';
 import * as React from 'react';
 
 export default function Node({ size, x, y,parentIndex,parentCoords, isGreen, onClick, renderNewLine,stregth, type }) {
-    console.log(size, x, y,parentIndex,parentCoords, isGreen, onClick, renderNewLine,stregth, type,parentCoords) 
   const handleClick = (e) => {
     e.stopPropagation( ); 
     onClick( {size, x, y,parentIndex,parentCoords, isGreen, onClick, renderNewLine,stregth, type}); 

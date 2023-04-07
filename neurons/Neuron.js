@@ -8,8 +8,8 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
   const [weightValue, setWeightValue] = useState(weight);
   const nodeSize = size*0.2
   const [nodes, setNodes] = useState([
-    { x: size/2-size*0.12, y: -nodeSize, isGreen: nodeColors.input.isGreen,type:"output",parentKey:id},
-    { x: size/2-size*0.12, y: size, isGreen: nodeColors.output.isGreen,type:"input", parentKey:id},
+    { x: size/2-size*0.12, y: -nodeSize, type:"output",parentKey:id},
+    { x: size/2-size*0.12, y: size, type:"input", parentKey:id},
   ]);
   const handleSliderValueChange = (name, value) => {
     if (name === "Bias") {
@@ -40,6 +40,12 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
       position: 'absolute',
       zIndex: 3,
     },
+    output:{
+      isGreen:nodeColors.output.isGreen
+    },
+    input:{
+      isGreen:nodeColors.input.isGreen
+    }
   };
 
   return (
@@ -51,7 +57,6 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
        onMouseDown={onMouseDown} 
        onMouseUp={onMouseUp}>
        {nodes.map((node, index) => {
-        //console.log(node.isGreen);
         return (
           <Node
             key={index}
@@ -60,7 +65,7 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
             x={node.x}
             y={node.y}
             parentCoords={{ x: x, y: y }}
-            isGreen={node.isGreen}
+            isGreen={node.type === "input"? styles.input.isGreen:styles.output.isGreen}
             onClick={reverseNodeColor}
             renderNewLine={renderNewLine}
             strength={node.value}
@@ -77,9 +82,7 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
         value={biasValue}
         setValue={setBiasValue}
         size={size}
-        sendValue={(name, value) => handleSliderValueChange(name, value)}
-        
-        
+        sendValue={(name, value) => handleSliderValueChange(name, value)}      
       />
       <Slider
         name="Bias"
