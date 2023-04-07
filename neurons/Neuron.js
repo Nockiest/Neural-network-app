@@ -1,28 +1,42 @@
 import { useState, useContext } from 'react';
 import * as React from 'react';
 import Slider from './Slider';
-import Node from "./ConnectionNode.js";
+import Node from './ConnectionNode.js';
 import { WorkspaceContext } from '../workspace';
 
-function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick, onMouseDown, onMouseUp, renderNewLine, id,nodesInfo }) {
-  
-  const { neurons, setNeurons } = useContext(WorkspaceContext)
-  const nodeSize = size*0.2
+function Neuron({
+  size,
+  isBlack,
+  bias,
+  weight,
+  x,
+  y,
+  reverseColor,
+  onRightClick,
+  onMouseDown,
+  onMouseUp,
+  renderNewLine,
+  id,
+  nodesInfo,
+}) {
+  const { neurons, setNeurons } = useContext(WorkspaceContext);
+  const nodeSize = size * 0.2;
   const [nodes, setNodes] = useState([
-    { x: size/2-size*0.12, y: -nodeSize, type:"output",parentKey:id},
-    { x: size/2-size*0.12, y: size, type:"input", parentKey:id},
+    { x: size / 2 - size * 0.12, y: -nodeSize, type: 'output', parentKey: id },
+    { x: size / 2 - size * 0.12, y: size, type: 'input', parentKey: id },
   ]);
   const handleSliderValueChange = (name, value) => {
-    const updatedNeurons = neurons.map((n) => {   
+    console.log(name, value);
+    const updatedNeurons = neurons.map((n) => {
       if (n.id === id) {
-        if (name === "bias"){
+        if (name === 'bias') {
           return { ...n, bias: value };
-        } else if (name === "weight") {
+        } else if (name === 'weight') {
           return { ...n, weight: value };
         }
       } else {
         return n;
-      } 
+      }
     });
     setNeurons(updatedNeurons);
   };
@@ -47,58 +61,59 @@ function Neuron({ size, isBlack, bias, weight, x, y, reverseColor, onRightClick,
       zIndex: 3,
     },
   };
-
+console.log(weight,bias)
   return (
     <div style={{ position: 'relative' }}>
       <div
-       style={styles.neuron}
-       onClick={reverseColor} 
-       onContextMenu={onRightClick} 
-       onMouseDown={onMouseDown} 
-       onMouseUp={onMouseUp}>
-       {nodes.map((node, index) => {
-        return (
-          <Node
-            key={index}
-            parentIndex={id}
-            size={nodeSize}
-            x={node.x}
-            y={node.y}
-            parentCoords={{ x: x, y: y }}
-            active = {node.type==="inputActive"?nodesInfo.inputActive:nodesInfo.outputActive}
-            strength={node.type==="inputActive"?bias:weight}
-            onClick={renderNewLine}
-            strength={node.value}
-            type={node.type}
-            
-          />
-        );
-      })}
-       </div>
+        style={styles.neuron}
+        onClick={reverseColor}
+        onContextMenu={onRightClick}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+      >
+        {nodes.map((node, index) => {
+          return (
+            <Node
+              key={index}
+              parentIndex={id}
+              size={nodeSize}
+              x={node.x}
+              y={node.y}
+              parentCoords={{ x: x, y: y }}
+              active={
+                node.type === 'input'
+                  ? nodesInfo.inputActive
+                  : nodesInfo.outputActive
+              }
+              strength={node.type === 'input' ? bias : weight}
+              onClick={renderNewLine}
+              strength={node.value}
+              type={node.type}
+            />
+          );
+        })}
+      </div>
       <Slider
-        name={"weight"}
+        name={'weight'}
         x={x}
         y={y}
         value={weight}
         size={size}
-        updateValue={(name, value) => handleSliderValueChange(name, value)}      
+        updateValue={(name, value) => handleSliderValueChange(name, value)}
       />
       <Slider
-        name={"bias"}
+        name={'bias'}
         x={x}
-        y={y+size*0.7}
-        value={bias}    
+        y={y + size * 0.7}
+        value={bias}
         size={size}
         updateValue={(name, value) => handleSliderValueChange(name, value)}
       />
     </div>
-  )
+  );
 }
 
-
-export default Neuron
-
-
+export default Neuron;
 
 /*isGreen={node.type === "input"? styles.input.isGreen:styles.output.isGreen}*/
 /*const handleNeuronClick = (event) => {
@@ -109,7 +124,6 @@ export default Neuron
     }
   };*/
 
-
 /*(event) => {
     if (event.button === 0) {
       setIsDragging(true);
@@ -117,9 +131,8 @@ export default Neuron
       mouseDown(event); // call the onMouseDown function passed as a prop
     }
   };*/
-  
 
-  /*const handleMouseMove = (event) => {
+/*const handleMouseMove = (event) => {
     if (isDragging) {
       const newX = x + event.clientX - initialMousePos.x;
       const newY = y + event.clientY - initialMousePos.y;
@@ -132,7 +145,7 @@ export default Neuron
     }
   };*/
 
- /*const handleClick = () => {
+/*const handleClick = () => {
     setNeurons(
       neurons.map((neuron) => {
         if (neuron === { x, y }) {
@@ -143,12 +156,6 @@ export default Neuron
       })
     );
   };*/
-
-
-
-
-
-
 
 /*const handleNeuronClick = (event) => {
     if (event.button === 0) { // left mouse button
@@ -158,7 +165,6 @@ export default Neuron
     }
   };*/
 
-
 /*(event) => {
     if (event.button === 0) {
       setIsDragging(true);
@@ -166,9 +172,8 @@ export default Neuron
       mouseDown(event); // call the onMouseDown function passed as a prop
     }
   };*/
-  
 
-  /*const handleMouseMove = (event) => {
+/*const handleMouseMove = (event) => {
     if (isDragging) {
       const newX = x + event.clientX - initialMousePos.x;
       const newY = y + event.clientY - initialMousePos.y;
@@ -181,7 +186,7 @@ export default Neuron
     }
   };*/
 
- /*const handleClick = () => {
+/*const handleClick = () => {
     setNeurons(
       neurons.map((neuron) => {
         if (neuron === { x, y }) {
@@ -192,4 +197,3 @@ export default Neuron
       })
     );
   };*/
-
