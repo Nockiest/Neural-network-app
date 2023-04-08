@@ -6,14 +6,12 @@ import { v4 as uuidv4 } from 'uuid';
  
 export const WorkspaceContext = createContext(null);
 
-export default function Workspace() {
-   
+export default function Workspace() {  
   const [neurons, setNeurons] = useState([]);
   const [connectionLineStart, setConnectionLineStart] = useState({x:null,y:null});
   const [renderedLines, setRenderedLines] = useState([]);
   const [mouseX, setMouseX] = useState(null);
   const [mouseY, setMouseY] = useState(null);
-  
   const neuronSize =60;
 
   const handleClick = (event) => {    
@@ -30,7 +28,7 @@ export default function Workspace() {
     });
     if (!isOccupied) {
       setNeurons((prevNeurons) => {
-        const newNeurons = [...prevNeurons, { x, y, isBlack: false,  id: uuidv4(), bias: 0, weight: 0, input:[], output: []}];
+        const newNeurons = [...prevNeurons, { x, y, firedUp: 0,  id: uuidv4(), bias: 0, weight: 0, input:[], output: []}];
         return newNeurons;
       });
     } else {
@@ -49,18 +47,19 @@ export default function Workspace() {
     };
   }, [mouseX, mouseY]);
 
-  const reverseNeuronColor = (event, neuron) => {
-    if (event.button !== 0) return; // Only handle left mouse button
-  
+  const toggleNeuronActivation = (event, id) => {
+ //   if (event.button !== 0) return; // Only handle left mouse button
+    console.log(id)
     const updatedNeurons = neurons.map((n) => {
-      if (n === neuron) {
-        return { ...n, isBlack: !n.isBlack };
+      if (n.id === id) {
+        return { ...n, firedUp: n.firedUp === 0 ? 1 : 0 };
       } else {
         return n;
       }
-    }); 
+    });
     setNeurons(updatedNeurons);
   };
+  
 
    const deleteNeuron = (event,neuron) => {  
      const newNeurons = neurons.filter((n) => { 
@@ -81,7 +80,7 @@ export default function Workspace() {
     if(node === undefined){return}
     
     const neuron = neurons.find((n) => n.id === node.parentIndex);
-  if(node.type === "input"&&connectionLineStart.x === null){return}
+  if(node.type === "input"&& connectionLineStart.x === null){return}
 
     if (connectionLineStart.x !== null) {   
 
@@ -133,7 +132,6 @@ export default function Workspace() {
               <div style={styles.workspace} onClick={handleClick} onContextMenu={preventContextMenu}>
                   
                 {neurons.map((neuron) => {
-                  //console.log(neuron.input, neuron.output);
                   return (
                     <WorkspaceContext.Provider value={{ neurons, setNeurons }} key={neuron.id}>
                       <Neuron
@@ -141,21 +139,14 @@ export default function Workspace() {
                         size={neuronSize}
                         x={neuron.x}
                         y={neuron.y}
-                        isBlack={neuron.isBlack}
+                        isFired={neuron.isFired}
                         output={neuron.output}
                         input={neuron.input}
                         bias={neuron.bias}
                         weight={neuron.weight} 
-                        reverseColor={() => reverseNeuronColor(neuron)}
+                        toggleNeuronActivation={toggleNeuronActivation}
                         onRightClick={(event) => deleteNeuron(event, neuron)}
-                        renderNewLine={(node) => renderNewLine(node)}
-                        style={{
-                          position: 'absolute',
-                          top: neuron.y,
-                          left: neuron.x,
-                          border: '0.05rem solid black',
-                          backgroundColor: neuron.isBlack ? 'black' : 'white',
-                        }}
+                        renderNewLine={(node) => renderNewLine(node)}                     
                       />
                     </WorkspaceContext.Provider>
                   );
@@ -168,7 +159,7 @@ export default function Workspace() {
                       endCoords={line.endPosition}
                       color={"green"}
                       startNeuronId={line.startNeuronId}
-                      line={line}
+                    
                     />
                   </WorkspaceContext.Provider>
                 );
@@ -180,22 +171,13 @@ export default function Workspace() {
     </div>
   );
 } 
- /*const reverseNodeColor = (node) => {
-    const updatedNeurons = neurons.map((n) => {
-      
-      if (n.id === node.parentIndex) {
-      
-        const output= {...n.output};
-        const input= {...n.input};
-        node.type==="output"?updatedNodes.outputActive=!updatedNodes.outputActive :updatedNodes.inputActive = !updatedNodes.inputActive;
-        return { ...n, nodes: updatedNodes };
-      } else {
-        return n;
-      }
-    });
-    setNeurons(updatedNeurons);
-  };*///Je mi ta funkce ještě k něčemu??
-
+/*style={{
+                          position: 'absolute',
+                          top: neuron.y,
+                          left: neuron.x,
+                          border: '0.05rem solid black',
+                          backgroundColor: neuron.firedUp ? 'black' : 'white',
+                        }}*/
 /*const dragNeuron = (event, neuron) => {
   if (dragedFromPosition) {
     return;

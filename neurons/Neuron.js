@@ -4,7 +4,7 @@ import Slider from './Slider';
 import Node from './ConnectionNode.js';
 import { WorkspaceContext } from '../workspace';
 
-function Neuron({size,isBlack,bias, weight, x, y,reverseColor,onRightClick,onMouseDown,onMouseUp,renderNewLine,id, input, output}) {
+function Neuron({size,firedUp,bias, weight, x, y,toggleNeuronActivation,onRightClick,onMouseDown,onMouseUp,renderNewLine,id, input, output}) {
   const { neurons, setNeurons } = useContext(WorkspaceContext);
   const nodeSize = size * 0.2;
   const [nodes, setNodes] = useState([
@@ -25,13 +25,14 @@ function Neuron({size,isBlack,bias, weight, x, y,reverseColor,onRightClick,onMou
     });
     setNeurons(updatedNeurons);
   };
+   
   const styles = {
     neuron: {
       width: `${size}px`,
       height: `${size}px`,
       border: '1px solid black',
-      backgroundColor: isBlack ? 'gray' : 'white',
-      color: isBlack ? 'white' : 'black',
+      backgroundColor: firedUp !== 0 ? 'gray' : 'white',
+     // color: firedUp ? 'white' : 'black',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
@@ -46,11 +47,12 @@ function Neuron({size,isBlack,bias, weight, x, y,reverseColor,onRightClick,onMou
       zIndex: 3,
     },
   };
+  console.log(id,toggleNeuronActivation(event,id))
   return (
     <div style={{ position: 'relative' }}>
       <div
         style={styles.neuron}
-        onClick={reverseColor}
+        onClick={(event,id) => toggleNeuronActivation(event, id)}
         onContextMenu={onRightClick}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
