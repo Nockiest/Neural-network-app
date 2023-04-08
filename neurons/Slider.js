@@ -64,7 +64,14 @@ function Slider({ name, x, y, value, updateValue, size }) {
         value={value}
         style={styles.slider}
         onChange={(e) => updateValue(name, e.target.value)} // pass name as a string here
-      />  
+        onMouseMove={(e) => {
+          if (e.buttons === 1) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const normalizedX = (e.clientX - rect.left) / rect.width;
+            updateValue(name, (normalizedX * 2 - 1).toFixed(1));
+          }
+        }}
+      />     
     </div>
   );
 }

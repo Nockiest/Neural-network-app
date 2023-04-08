@@ -6,7 +6,7 @@ export default function Node({ size, x, y, parentIndex, parentCoords, active, on
     e.stopPropagation();
     onClick({ size, x, y, parentIndex, parentCoords, isGreen: active, onClick, strength, type });
   };
-
+console.log(strength)
   const styles = {
     node: {
       width: `${size}px`,

@@ -10,10 +10,9 @@ function Line({ startCoords, endCoords = { x: window.mouseX+window.scrollX, y: w
   const angle = Math.atan2(dy, dx);
   const length = Math.sqrt(dx * dx + dy * dy);
   const neuron = neurons.find((n) => n.id === startNeuronId);
-  //console.log()
-  if(startNeuronId){
-    console.log(startNeuronId ,"xyz",neuron)
-  }
+  //if(startNeuronId){
+  //  console.log(startNeuronId ,"xyz",neuron)
+  //}
   if (startCoords.x === null || window.mouseX === null) {
       return null; // return null if coordinates are invalid
   }

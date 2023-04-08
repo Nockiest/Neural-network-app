@@ -48,7 +48,6 @@ function Neuron({size,isBlack,bias, weight, x, y,reverseColor,onRightClick,onMou
       zIndex: 3,
     },
   };
-console.log(weight,bias)
   return (
     <div style={{ position: 'relative' }}>
       <div
@@ -59,26 +58,23 @@ console.log(weight,bias)
         onMouseUp={onMouseUp}
       >
         {nodes.map((node, index) => {
-          return (
-            <Node
-              key={index}
-              parentIndex={id}
-              size={nodeSize}
-              x={node.x}
-              y={node.y}
-              parentCoords={{ x: x, y: y }}
-              active={
-                node.type === 'input'
-                  ? nodesInfo.inputActive
-                  : nodesInfo.outputActive
-              }
-              strength={node.type === 'input' ? bias : weight}
-              onClick={renderNewLine}
-              strength={node.value}
-              type={node.type}
-            />
-          );
-        })}
+    <Node
+      key={index}
+      parentIndex={id}
+      size={nodeSize}
+      x={node.x}
+      y={node.y}
+      parentCoords={{ x: x, y: y }}
+      active={
+        node.type === 'input'
+          ? nodesInfo.inputActive
+          : nodesInfo.outputActive
+      }
+      strength={node.type === 'input' ? bias : weight}
+      onClick={renderNewLine}
+      type={node.type}
+    />
+})}
       </div>
       <Slider
         name={'weight'}

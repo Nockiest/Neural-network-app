@@ -99,7 +99,7 @@ export default function Workspace() {
 
     if (connectionLineStart.x !== null) {   
       // Create new line object
-      console.log(connectionLineStart.startNeuronId)
+      console.log(connectionLineStart.startNeuronId,"id")
       const newLine = {
         startPosition: { x: connectionLineStart.x, y: connectionLineStart.y },
         endPosition: { x: node.parentCoords.x + node.x + node.size / 2, y: node.parentCoords.y + node.y+ node.size / 2 },
@@ -118,8 +118,6 @@ export default function Workspace() {
       setConnectionLineStart({ x: null, y: null });
     } else {
       setConnectionLineStart({ x: node.parentCoords.x + node.size / 2+node.x, y: node.parentCoords.y + node.size / 2 +node.y, startNeuronId:neuron.id});
-      console.log(neuron)
-      console.log(renderedLines)
       reverseNodeColor(node)
     }
   };
@@ -164,16 +162,21 @@ export default function Workspace() {
           </WorkspaceContext.Provider>
         );
       })}
-     {renderedLines.map((line, index) => {
-            <WorkspaceContext.Provider value={{ neurons, setNeurons }}>
-       <Line
+    {renderedLines.map((line, index) => {
+// console.log(line.startNeuronId); // Add this line to console out the 'line'
+  return (
+    <WorkspaceContext.Provider value={{ neurons, setNeurons }}>
+      <Line
         startCoords={line.startPosition}
         endCoords={line.endPosition}
         color={"green"}
         startNeuronId={line.startNeuronId}
+        line={line}
       />
-         </WorkspaceContext.Provider>
-        })}
+    </WorkspaceContext.Provider>
+  );
+})}
+
         <WorkspaceContext.Provider value={{ neurons, setNeurons }}>
          <Line startCoords={connectionLineStart} endCoords={{ x: mouseX + window.scrollX, y: mouseY + window.scrollY + 15 }} color={"lightGreen"} startNeuronId={connectionLineStart.startNeuronId} />
          </WorkspaceContext.Provider>
