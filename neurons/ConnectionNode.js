@@ -6,13 +6,13 @@ export default function Node({ size, x, y, parentIndex, parentCoords, active, on
     e.stopPropagation();
     onClick({ size, x, y, parentIndex, parentCoords, isGreen: active, onClick, strength, type });
   };
-console.log(strength)
+
   const styles = {
     node: {
       width: `${size}px`,
       height: `${size}px`,
       borderRadius: "50%",
-      backgroundColor: active ? strength > 0 ? "green" : "purple" : "white",
+      backgroundColor: active.length === 0 || strength === 0 ? "white": (strength > 0 ? "green" : "purple") ,
       border: "1px solid black",
       position: "absolute",
       top: y,

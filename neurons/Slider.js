@@ -5,10 +5,11 @@ function Slider({ name, x, y, value, updateValue, size }) {
   const [color, setColor] = useState('black');
 
   React.useEffect(() => {
+     
     if (value === 0) {
       setColor('black');
     } else if (value > 0) {
-      setColor(`hsl(105, 100%, 27%, 1`)//green
+      setColor(`hsl(105, 100%, 27%, 1)`); // green
     } else {
       setColor(`hsl(280, 50%, 50%)`);
     }
@@ -53,6 +54,7 @@ function Slider({ name, x, y, value, updateValue, size }) {
       textFillColor: color,
        },
   };
+
   return (
     <div style={styles.sliderContainer}>
       <div style={styles.label}>{name}</div>
@@ -75,6 +77,7 @@ function Slider({ name, x, y, value, updateValue, size }) {
     </div>
   );
 }
+
 
  
 

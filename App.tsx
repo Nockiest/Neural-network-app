@@ -40,6 +40,10 @@ function App() {
 
 export default App;
  
+// oprav měnění barvy neuronů
+// dovol jim se měnit, jen když nemají žádný input
+// předej render line do node pomocíworkspace contextu
+// odstranit čáru, když kliknu vedle
 // měň tuto barvu na základě pravidle tvé simulace
 // stylizuj ji podle hodnoty
 //oprav, že se po dragnutí zobrazí nový neuron

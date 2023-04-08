@@ -4,8 +4,7 @@ import Slider from './Slider';
 import Node from './ConnectionNode.js';
 import { WorkspaceContext } from '../workspace';
 
-function Neuron({size,isBlack,bias, weight, x, y,reverseColor,onRightClick,onMouseDown,onMouseUp,renderNewLine,id,nodesInfo,
-}) {
+function Neuron({size,isBlack,bias, weight, x, y,reverseColor,onRightClick,onMouseDown,onMouseUp,renderNewLine,id, input, output}) {
   const { neurons, setNeurons } = useContext(WorkspaceContext);
   const nodeSize = size * 0.2;
   const [nodes, setNodes] = useState([
@@ -13,7 +12,6 @@ function Neuron({size,isBlack,bias, weight, x, y,reverseColor,onRightClick,onMou
     { x: size / 2 - size * 0.12, y: size, type: 'input', parentKey: id },
   ]);
   const handleSliderValueChange = (name, value) => {
-    console.log("I")
     const updatedNeurons = neurons.map((n) => {   
       if (n.id === id) {
         if (name === "bias"){
@@ -58,23 +56,21 @@ function Neuron({size,isBlack,bias, weight, x, y,reverseColor,onRightClick,onMou
         onMouseUp={onMouseUp}
       >
         {nodes.map((node, index) => {
-    <Node
-      key={index}
-      parentIndex={id}
-      size={nodeSize}
-      x={node.x}
-      y={node.y}
-      parentCoords={{ x: x, y: y }}
-      active={
-        node.type === 'input'
-          ? nodesInfo.inputActive
-          : nodesInfo.outputActive
-      }
-      strength={node.type === 'input' ? bias : weight}
-      onClick={renderNewLine}
-      type={node.type}
-    />
-})}
+          return (
+            <Node
+              key={index}
+              parentIndex={id}
+              size={nodeSize}
+              x={node.x}
+              y={node.y}
+              parentCoords={{ x: x, y: y }}
+              active={node.type === 'input' ? input : output}
+              strength={node.type === 'input' ? bias : weight}
+              onClick={renderNewLine}
+              type={node.type}
+            />
+          );
+        })}
       </div>
       <Slider
         name={'weight'}

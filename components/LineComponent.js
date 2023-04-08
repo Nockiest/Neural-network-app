@@ -25,7 +25,7 @@ function Line({ startCoords, endCoords = { x: window.mouseX+window.scrollX, y: w
             left: startCoords.x,
             width: length,
             height: '2px',
-            backgroundColor: startNeuronId && neuron.weight > 0 ? "green" : "purple",
+            backgroundColor: startNeuronId && neuron.weight > 0 ? "green" : (neuron.weight === 0 ? "black" : "purple"),
             transform: `rotate(${angle}rad)`,
             transformOrigin: '0 0',
             pointerEvents: 'none',
