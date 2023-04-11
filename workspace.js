@@ -15,6 +15,7 @@ export default function Workspace() {
   const neuronSize =60;
 
   const handleClick = (event) => {    
+    console.log("click")
     if (event.button !== 0) return; // Only handle left mouse click
     const x = event.clientX - neuronSize / 2;
     const y = event.clientY - neuronSize / 2;
